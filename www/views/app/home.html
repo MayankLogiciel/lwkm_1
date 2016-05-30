@@ -1,0 +1,26 @@
+<ion-view  class="home-view">
+  <ion-nav-title>
+    <span>LWKM</span>
+  </ion-nav-title>
+  <ion-content on-scroll="getScrollPosition()">
+
+    <!-- Refresh to get the new posts -->
+    <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()" pulling-icon="ion-arrow-down-b assertive" spinner="none">
+    </ion-refresher>
+
+    <div class="posts">
+      <div post-card ng-repeat="post in posts" class="post-card"></div>
+    </div>
+
+    <!-- Infinit scroll -->
+    <ion-infinite-scroll ng-if="moreDataCanBeLoaded()" on-infinite="loadMoreData()" distance="1%">
+    </ion-infinite-scroll>
+  </ion-content>
+  <div class="float-button effect1" ng-show="sttButton" ng-click="scrollTop()">
+  <span class="height-fix">
+    <a class="cont">
+      <i class="icon ion-chevron-up white"> </i>
+    </a>
+  </span>
+</div>
+</ion-view>

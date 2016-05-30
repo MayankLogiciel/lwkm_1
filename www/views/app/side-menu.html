@@ -1,0 +1,69 @@
+<ion-side-menus enable-menu-with-back-views="false">
+  <ion-side-menu-content class="post-size-14px">
+    <ion-nav-bar class="bar app-top-bar effect1">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+      <ion-nav-buttons side="left">
+        <button class="button button-icon ion-navicon-round" menu-toggle="left">
+        </button>
+      </ion-nav-buttons>
+       <ion-nav-buttons side="right">
+       <button class="button button-icon button-clear ion-share" ng-click="showFAQS()">
+        </button>
+       <button class="button button-icon button-clear ion-ios-heart" ng-click="showRates()">
+        </button>
+        <button class="button button-icon button-assertive ion-search" menu-toggle="right">
+        </button>
+		<button class="button button-icon button-clear ion-android-more-vertical" ng-click="popover.show($event)">
+        </button>
+      </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-nav-view name="menuContent"></ion-nav-view>
+  </ion-side-menu-content>
+
+  <ion-side-menu class="main-menu" side="left" width="250">
+    <!-- button in header-bar -->
+       <ion-header-bar>
+         <button class="button button-icon icon ion-ios-compose-outline"  nav-clear menu-close ui-sref="app.submit"></button>
+       </ion-header-bar>
+    <ion-content>
+              <ul class="list">
+                  <!-- item-avatar user with status -->
+                  <a class="item item-avatar" nav-clear>
+                      <img src="icon2.png">
+                      <h2>LWKM</h2>
+                      <p>Laugh Wan Kill Me</p>
+                  </a>
+                  <!-- menu items  with style active, inactive on off -->
+                  <a class="item item-icon-left" nav-clear menu-close ui-sref="app.home">
+                      <i class="icon ion-ios-home-outline"></i>Home
+                  </a>
+                  <a class="item item-icon-left" nav-clear menu-close ui-sref="app.bookmarks">
+                      <i class="icon ion-ios-bookmarks-outline"></i>Saved for Later
+                  </a>
+                  <a class="item item-icon-left" nav-clear menu-close ui-sref="app.tab">
+                      <i class="icon ion-ios-people-outline"></i>About Us
+                  </a>
+                  <a class="item item-icon-left" nav-clear menu-close ui-sref="app.page">
+                      <i class="icon ion-mic-c"></i>Advertise
+                  </a>
+                  <a class="item item-icon-left" nav-clear menu-close ui-sref="app.contact">
+                        <i class="icon ion-ios-email-outline"></i>Contact Us
+                    </a>
+                  <a class="item item-icon-left" nav-clear menu-close ui-sref="app.settings">
+                      <i class="icon ion-ios-cog-outline"></i>Settings
+                  </a>
+              </ul>
+
+          </ion-content>
+
+  </ion-side-menu>
+
+  <ion-side-menu class="multi-level-push-menu" side="right" ng-controller="PushMenuCtrl">
+    <ion-content has-bouncing="false" scroll="false">
+      <wp-search>
+      </wp-search>
+      <push-menu menu="menu"></push-menu>
+    </ion-content>
+  </ion-side-menu>
+</ion-side-menus>

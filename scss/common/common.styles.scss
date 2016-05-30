@@ -1,0 +1,566 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,700,500italic,900,700italic,900italic);
+
+// General reset styles
+*
+{
+  color: $content-color;
+  font-family: 'Roboto', sans-serif;
+}
+.bar.app-top-bar
+{
+  background-color: $top-bar-bg;
+  border: none;
+
+
+  .title
+  {
+    color: $top-bar-color !important;
+    *
+    {
+      color: $top-bar-color !important;
+    }
+  }
+
+  .button
+  {
+    color: $top-bar-color !important;
+    *
+    {
+      color: $top-bar-color !important;
+    }
+  }
+}
+
+
+// Preload images aux styles (ratios)
+// Auto generate ratios for the whole app (see: http://stackoverflow.com/a/18120181/1116959)
+@each $ratio in $pre-img-ratios {
+  .pre-img._#{nth($ratio, 1)}_#{nth($ratio, 2)}
+  {
+    // Conserve aspect ratio (see: http://stackoverflow.com/a/10441480/1116959)
+    width: 100%;
+    padding-bottom: #{(nth($ratio, 2) / nth($ratio, 1)) * 100}%;
+  }
+}
+
+.pre-img
+{
+  position: relative;
+  background-color: $pre-img-bg;
+
+	// If the image is rounded
+	&.rounded-image
+	{
+		border-radius: 50%;
+	}
+
+  &.finish-loading
+  {
+    background-color: transparent;
+    border: none;
+
+		img
+	  {
+			visibility: visible;
+			opacity: 1;
+	  }
+  }
+
+  img
+  {
+    position: absolute;
+		left: 0px;
+		top: 0px;
+		visibility: hidden;
+		opacity: 0;
+		@include transition(visibility 0s linear, opacity 0.5s linear);
+  }
+}
+
+// spinner-on-load
+@include keyframes(spin) {
+  from {
+    @include transform(rotate(0deg));
+  }
+  to {
+    @include transform(rotate(359deg));
+  }
+}
+.spinner-on-load
+{
+	position: absolute;
+	font-size: $spinner-size;
+	width: $spinner-size;
+	height: $spinner-size;
+	line-height: $spinner-size;
+  color: #FF0000;
+	@include animation(spin 2s infinite linear);
+	@include calc(top, "50% - #{($spinner-size/2)}");
+	@include calc(left, "50% - #{($spinner-size/2)}");
+}
+ion-spinner.spinner-on-load
+{
+	@include animation(none);
+  stroke: #FF0000;
+	width: $spinner-svg-size;
+  height: $spinner-svg-size;
+	line-height: inherit;
+	@include calc(top, "50% - #{($spinner-svg-size/2)}");
+	@include calc(left, "50% - #{($spinner-svg-size/2)}");
+}
+
+/* Empty. Add your own CSS if you like */
+.titleuni{
+	 position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 0;
+    overflow: hidden;
+    padding: 0 10px;
+    min-width: 30px;
+    height: 43px;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 44px;
+	background-color:#FFC;
+	}
+.bigsocial{
+  font-size: 30px;
+}
+.about-image{
+  height: 220px;
+  width: 100%;
+  margin-bottom: 10px;
+  background-color:#FFC;
+  background-repeat:no-repeat;
+  background-image:url(../resources/about.png);
+  background-position:center, center;
+  border: 2px dotted #CCC;
+}
+
+.ogasir{
+  height: 220px;
+  width: 100%;
+  margin-bottom: 10px;
+  background-color:#FFC;
+  background-repeat:no-repeat;
+  background-image:url(../resources/ogasir.png);
+  background-position:center, center;
+  border: 2px dotted #CCC;
+}
+
+.akposbabe{
+  height: 220px;
+  width: 100%;
+  margin-bottom: 10px;
+  background-color:#FFC;
+  background-repeat:no-repeat;
+  background-image:url(../resources/akposbabe.png);
+  background-position:center, center;
+  border: 2px dotted #CCC;
+}
+
+.engrakpos{
+  height: 220px;
+  width: 100%;
+  margin-bottom: 10px;
+  background-color:#FFC;
+  background-repeat:no-repeat;
+  background-image:url(../resources/engrakpos.png);
+  background-position:center, center;
+  border: 2px dotted #CCC;
+}
+
+.sad-image{
+  height: 220px;
+  width: 100%;
+  margin-bottom: 10px;
+  background-color:#FFC;
+  background-repeat:no-repeat;
+  background-image:url(../resources/sad.png);
+  background-position:center, center;
+  border: 2px dotted #CCC;
+}
+.contact-image{
+  height: 200px;
+  width: 100%;
+  margin-bottom: 10px;
+  background-color:#FFC;
+  background-repeat:no-repeat;
+  background-image:url(../img/mascot1.png);
+  background-position:center, center;
+  border: 2px dotted #CCC;
+}
+.rates-image{
+  height: 200px;
+  width: 100%;
+  margin-bottom: 10px;
+  background-color:#FFC;
+  background-repeat:no-repeat;
+  background-image:url(../img/rate.png);
+  background-position:center, center;
+  border: 2px dotted #CCC;
+}
+.video-image{
+  height: 200px;
+  width: 100%;
+  margin-bottom: 10px;
+  background-color:#FFC;
+  background-repeat:no-repeat;
+  background-image:url(../img/video.png);
+  background-position:center, center;
+  border: 2px dotted #CCC;
+}
+.pictures-image{
+  height: 200px;
+  width: 100%;
+  margin-bottom: 10px;
+  background-color:#FFC;
+  background-repeat:no-repeat;
+  background-image:url(../img/photo.png);
+  background-position:center, center;
+  border: 2px dotted #CCC;
+}
+.event-image{
+  height: 200px;
+  width: 100%;
+  margin-bottom: 10px;
+  background-color:#FFC;
+  background-repeat:no-repeat;
+  background-image:url(../img/event.png);
+  background-position:center, center;
+  border: 2px dotted #CCC;
+}
+.joke-image{
+  height: 200px;
+  width: 100%;
+  margin-bottom: 10px;
+  background-color:#FFC;
+  background-repeat:no-repeat;
+  background-image:url(../img/joke.png);
+  background-position:center, center;
+  border: 2px dotted #CCC;
+}
+.featured-image{
+	height: auto;
+  width: 100%;
+}
+
+.loginlogo{
+	display:block;
+	margin: 0 auto;
+	}
+
+.rates {
+  padding: 20px;
+  text-align: justify; }
+
+.registerprompt {
+	font-weight:bolder;
+	color:#F00;
+	margin: 0 10px;
+}
+
+.post-card .card-header .headertitle {
+	color:#000;
+	font-weight:bold;
+}
+
+ .footsie{
+	border-top: 2px dotted #FF0000;
+	color:#000;
+	font-weight:bold;
+}
+.borderright{
+  padding-right: 2px;
+  padding-left: 2px;
+	border-right: 1px solid #000000;
+  margin-top: -4px;
+  margin-bottom: -4px;
+
+}
+
+
+// Multimedia background
+.multi-bg-outer
+{
+  position: relative;
+  background-color: rgba(darken($multi-bg, 10%), 0.7);
+  height: 100%;
+  @include transition(all ease-in-out .3s);
+
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: -2;
+
+  &.finish-loading
+  {
+    background-color: transparent;
+  }
+
+  .bg-overlay
+  {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: $overlay-bg;
+    z-index: -1;
+    opacity: 0.6;
+  }
+
+  .multi-bg
+  {
+    display: none;
+  }
+}
+
+.boxer {
+	background:#FFF;
+	margin:10px auto;
+}
+
+.loading-container .loading
+{
+	background-color: $loading-background-color;
+  *
+  {
+    color: darken($loading-color, 5);
+		font-weight: 500;
+  }
+}
+.white {
+  color : white;
+}
+
+.red {
+  color : red;
+}
+.red {
+ float : right;
+}
+
+.float-button {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  width: 25px;
+  padding: 25px;
+  font-size: 25px;
+  background: #FF4747;
+   color: #FFFFFF;
+  position: fixed;
+  bottom: 10px; /* Adjust to where you want it */
+  right: 10px; /* Adjust to where you want it */
+  z-index: 9999;
+  opacity: 0.8;
+   filter: alpha(opacity=80);
+}
+
+.float-button .height_fix {
+  margin-top: 100%;
+}
+
+.float-button .cont {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  margin-top: -15px; /* Note, this must be half the font size */
+  color: #FFFFFF;
+}
+
+.spinner svg {
+  width: 28px;
+  height: 28px;
+  stroke: #FF4747;
+  fill: #FF4747;
+}
+
+
+ion-popover-view.fit {
+  height: auto;
+}
+
+ion-popover-view.fit ion-content {
+  position: relative;
+}
+
+.platform-android ion-popover-view.fit {
+  margin-top: 10px;
+}
+
+.platform-ios ion-popover-view.fit {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.popup-vertical-buttons button
+{
+    min-width: 100%;
+    margin-bottom: 5px;
+}
+.popup-vertical-buttons .popup-buttons
+{
+    display: block;
+	background-color: #FFFFFF;
+}
+
+.border
+{
+   border-top: 2px dotted #CCCCCC;
+   border-bottom: 2px dotted #CCCCCC;
+}
+
+div.footer-button a.button.button-full {
+    width:100%;
+    margin-top: 0
+}
+
+.sidemenu-item {
+			padding: $category-margin;
+			padding-left: $category-margin * 3;
+}
+
+.footer-assertive {
+			background-color: #FF5C5C;
+			border-top: 2px dotted #CCCCCC;
+}
+#mainContainer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin:0 0 50px 0;
+}
+
+.iframe-wrapper iframe {
+   width: 100%;
+   height: 100%;
+ }
+
+
+// Content Banner
+
+// Styles
+//-----------------------------------
+
+.content-banner {
+  width: 100%;
+  color: white;
+  height: $content-banner-height;
+  line-height: $content-banner-height;
+  position: absolute;
+  top: 0;
+  opacity: $content-banner-opacity;
+
+  &.error {
+    background-color: $content-banner-error-bg;
+  }
+  &.info {
+    background-color: $content-banner-info-bg;
+  }
+  .content-banner-text {
+    @include transition(opacity 500ms linear) ;
+    position: absolute;
+    top: 0;
+    right: ($button-padding * 2) + 5px + 12px;
+    left: ($button-padding * 2) + 5px + 12px;
+    text-align: center;
+    &.active {
+      opacity: 1;
+    }
+    &:not(.active){
+      opacity: 0;
+    }
+  }
+  .content-banner-close {
+    position: absolute;
+    right: 5px;
+    top: 0;
+    padding: 0 $button-padding;
+    height: 100%;
+    line-height: $content-banner-height;
+    min-height: 0;
+    color: white;
+    &:before {
+      line-height: $content-banner-height;
+    }
+  }
+}
+/**
+ * Loading
+ * --------------------------------------------------
+ */
+
+.loading-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  z-index: $z-index-loading;
+
+  @include display-flex();
+  @include justify-content(center);
+  @include align-items(center);
+
+  @include transition(0.2s opacity linear);
+  visibility: hidden;
+  opacity: 0;
+
+  &:not(.visible) .icon,
+  &:not(.visible) .spinner{
+    display: none;
+  }
+  &.visible {
+    visibility: visible;
+  }
+  &.active {
+    opacity: 1;
+  }
+
+  .loading {
+    padding: $loading-padding;
+
+    border-radius: $loading-border-radius;
+    background-color: $loading-bg-color;
+
+    color: $loading-text-color;
+
+    text-align: center;
+    text-overflow: ellipsis;
+    font-size: $loading-font-size;
+
+    h1, h2, h3, h4, h5, h6 {
+      color: $loading-text-color;
+    }
+  }
+}
+.content-banner-transition-vertical {
+  @include transition-transform(linear 250ms);
+  @include translate3d(0, -100%, 0);
+}
+
+.content-banner-transition-fade {
+  @include transition(opacity 400ms linear) ;
+  opacity: 0;
+}
+
+.content-banner-in {
+  @include translate3d(0, 0, 0);
+  opacity: $content-banner-opacity;
+}
+
+.hydro {
+display: none;
+}

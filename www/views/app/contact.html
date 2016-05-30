@@ -1,0 +1,57 @@
+
+<ion-tabs class="tabs-striped tabs-top tabs-color-assertive tabs-icon-top">
+
+  <ion-tab title="Connect" icon-on="ion-steam" icon-off="ion-network">
+    <!-- Tab 1 content -->
+<ion-nav-view name="tab-dash">
+  <ion-content class="padding">
+   <div>
+    </div>
+
+    <div class="contact-content">
+        <div class="contact-image"></div>
+      <div class="">
+        <p>
+         Do you just want to say hi? or perhaps you have a Joke/Skit/Picture that you would love to send to us and take credit for? or maybe you want us to promote an upcoming comedy event with us?  </p><p> We would love to hear from you. Tap the button below to send us an email.
+        </p>
+
+      </div>
+
+      <div class="contact-details-item">
+
+       <div class="send-email">
+        <button class="button ion-chatboxes button-block button-assertive" ng-controller="EmailSenderCtrl" ng-click="sendContactMail()">
+          Send us an email
+        </button>
+      </div>
+        <div class="row social-networks">
+          <div class="col"><a onclick="window.open('twitter://user?screen_name=lwkmapp', '_system', 'location=no')"><i class="icon bigsocial ion-social-twitter" style="color: #37b9e1;"></i></a></div>
+          <div class="col"><a onclick = "window.open('fb://page/108238316193203', '_system', 'location=no')"><i class="icon bigsocial ion-social-facebook" style="color: #3e649e;"></i></a></div>
+          <div class="col"><a onclick="window.open('http://www.instagram.com/lwkmapp', '_system', 'location=no')"><i class="icon bigsocial ion-social-instagram" style="color: #e36a96;"></i></a></div>
+        </ul>
+      </div>
+      </div>
+
+    </div>
+    </div>
+</ion-nav-view>
+  </ion-tab>
+
+  <ion-tab title="Locate" icon-on="ion-ios-location" icon-off="ion-ios-location-outline">
+
+    <!-- Tab 2 content -->
+<ion-nav-view name="tab-dash">
+  <ion-content class="padding">
+    <div class="contact-content">
+      <div class="">
+        <p>
+          We are situated somewhere in the streets of Warri, Nigeria. We never blow. So, we nor get office yet. Once we touch bar we go open ultra modern office for Effurun roundabout. No vex. Just send us an e-mail :)
+        </p>
+      </div>
+
+    </div>
+  </ion-content>
+</ion-nav-view>
+  </ion-tab>
+
+</ion-tabs>

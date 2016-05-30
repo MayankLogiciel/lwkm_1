@@ -1,0 +1,27 @@
+<ion-modal-view>
+	<ion-header-bar class="effect1">
+		<h1 class="titleuni">Share LWKM</h1>
+		<div class="button button-clear" ng-click="faqs_modal.hide()"><span class="icon ion-close"></span></div>
+	</ion-header-bar>
+	<ion-content ng-controller="SocialController"><div class="rates">
+					<h5>Don't Laugh Alone!</h5>
+					<p>
+						 You can support us by sharing this app with your friends.</p>
+
+            <div><button class="button ion-social-facebook button-block button-positive" onclick="window.plugins.socialsharing.shareViaFacebook('Install and Get the latest Nigerian Jokes,Comedy Videos,and Funny Pictures on your phone,http://www.lwkm.ng/app/facebookshare.png, http://www.lwkm.ng/app', null, null ,function() {console.log('share ok')}, function(errormsg){alert(errormsg)})"> Share via Facebook
+</button></div>
+
+<div><button class="button ion-social-twitter button-block button-calm" onclick="window.plugins.socialsharing.shareViaTwitter('Install and Get the latest Nigerian Jokes,Comedy Videos,and Funny Pictures on your phone http://www.lwkm.ng/app', null, null,function() {console.log('share ok')}, function(errormsg){alert(errormsg)})"> Share via Twitter
+</button></div>
+<div><button class="button ion-social-whatsapp button-block button-balanced" onclick="window.plugins.socialsharing.shareViaWhatsApp('Install and Get the latest Nigerian Jokes,Comedy Videos,and Funny Pictures on your phone http://www.lwkm.ng/app', null, null,function() {console.log('share ok')}, function(errormsg){alert(errormsg)})"> Share via Whatsapp
+</button></div>
+
+<div><button class="button ion-android-textsms button-block button-assertive" onclick="window.plugins.socialsharing.shareViaSMS('Install and Get the latest Nigerian Jokes,Comedy Videos,and Funny Pictures on your phone http://www.lwkm.ng/app', null, null,function() {console.log('share ok')}, function(errormsg){alert(errormsg)})"> Share via SMS
+</button></div>
+<div><button class="button ion-email button-block button-assertive" onclick="window.plugins.socialsharing.shareViaEmail('Install and Get the latest Nigerian Jokes,Comedy Videos,and Funny Pictures on your phone http://www.lwkm.ng/app', null, null,function() {console.log('share ok')}, function(errormsg){alert(errormsg)})"> Share via Email
+</button></div>
+<div><button class="button ion-email button-block button-assertive" onclick="window.plugins.socialsharing.share('Install and Get the latest Nigerian Jokes,Comedy Videos,and Funny Pictures on your phone http://www.lwkm.ng/app')"> Others
+</button></div>
+		</div>
+	</ion-content>
+</ion-modal-view>

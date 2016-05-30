@@ -1,0 +1,19 @@
+<ion-modal-view>
+	<ion-header-bar class="effect1">
+		<h1 class="titleuni">Submit Events</h1>
+		<div class="button button-clear" ng-click="events_modal.hide()"><span class="icon ion-close"></span></div>
+	</ion-header-bar>
+	<ion-content>
+		<div class="rates">
+			  <div class="event-image effect4"></div>
+    <p>
+  Do you have an upcoming comedy event that you would like us to feature? Please give details of the event along with a link to a YouTube video promoting the event.
+    </p>
+  <div class="send-email">
+        <button class="button ion-android-arrow-forward button-block button-assertive" ng-controller="EmailSenderCtrl" ng-click="sendEventsl()">
+          Proceed
+        </button>
+      </div>
+	</div>
+</ion-content>
+</ion-modal-view>

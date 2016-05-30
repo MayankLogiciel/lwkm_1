@@ -1,0 +1,17 @@
+<div class="card-header">
+  <h1 ng-bind-html="post.title | rawHtml" class="headertitle"></h1>
+  <h2>Posted <span am-time-ago="post.date"></span> by <span class="author" ng-bind-html="post.author.name | rawHtml"></span></h2>
+</div>
+<div><a ng-click="loadPostDetails(post)"><img  class="featured-image" ng-src="{{post.attachments[0].url}}" /></a></div>
+<div class="card-contents" dynamic-anchor-fix ng-bind-html="post.short_content | rawHtml"></div>
+<div class="card-footer">
+   <a class="card-button university" ng-click="loadPostDetails(post)"><i class="icon ion-ios-book coin"></i> MORE</a>
+  <a class="card-button primary" ng-click="sharePost(post.url)"><i class="icon ion-android-share-alt coin"></i></a>
+  <a class="card-button secondary" ng-click="bookmarkPost(post)">
+    <i class="icon ion-bookmark coin"></i>
+  </a>
+ <a ng-show="post.comment_count > 0" class="card-button comments" ng-click="loadPostDetails(post)">
+    <i class="icon ion-chatboxes coin"></i>{{post.comment_count}}
+  </a>
+
+</div>

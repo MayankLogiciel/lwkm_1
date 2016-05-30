@@ -1,0 +1,67 @@
+<ion-view class="post-view" cache-view="false">
+  <ion-nav-title>
+    Laff wan kill me
+  </ion-nav-title>
+  <ion-content scroll="true" overflow-scroll="true" class="iframe-wrapper">
+    <div class="post"  post-content>
+      <div class="card-header">
+		  <h1 ng-bind-html="post.title | rawHtml" class="title" on-hold="copyText('Header')">Header</h1>
+        <h2>Posted <span am-time-ago="post.date"></span> by <span class="author" ng-bind-html="post.author.name | rawHtml"></span></h2>
+
+      </div>
+    <div class="card-content"  dynamic-anchor-fix ng-bind-html="post.content | rawHtml"></div>
+    </div>
+    <div ng-if = "post.custom_fields.joke_hype"><p>{{ post.custom_fields.joke_hype}} </p></div>
+    <div ng-if = "post.custom_fields.picture_hype"><p>{{ post.custom_fields.picture_hype}} </p></div>
+    <div ng-if = "post.custom_fields.video_hype"><p>{{ post.custom_fields.video_hype}} </p></div>
+    <div ng-if = "post.custom_fields.event_hype"><p>{{ post.custom_fields.event_hype}} </p></div>
+    <div ng-if = "post.custom_fields.profile_hype"><p>{{ post.custom_fields.profile_hype}} </p></div>
+    <div class="post-actions">
+      <a class="card-button1 secondary" ng-click="sharePost(post.url)"><i class="icon ion-android-share-alt"></i> SHARE</a>
+      <a class="card-button1 primary" ng-controller="HomeCtrl" ng-click="bookmarkPost(post)"><i class="icon ion-android-bookmark"></i> BOOKMARK</a>
+      <span ng-show="post.comment_count > 0" class="card-button comment-count">
+        <i class="icon ion-chatbox"></i>{{post.comment_count}}
+      </span>
+	</div>
+    <div class="comments">
+      <div class="list">
+        <a class="item item-avatar" ng-repeat="comment in comments" href="#" ng-class="{highlighted: comment.id === new_comment_id}">
+          <img ng-src="{{comment.user_gravatar}}">
+          <h2  ng-bind-html="comment.author.name | rawHtml"><span class="comment-date" am-time-ago="comment.date"></span></h2>
+          <p class="message-content" ng-bind-html="comment.content | rawHtml"></p>
+        </a>
+      </div>
+    </div>
+
+    <div class="button-bar border">
+	<button class="button button-block  button-clear button-assertive icon-left ion-happy " ng-click="showSubmitMenu()">
+ Be Funny
+</button>
+	</div>
+
+  </ion-content>
+  <div class="float-button-home effect1">
+  <span class="height-fix">
+    <a ng-click="sharePost(post.url)" class="cont">
+      <i class="ion-android-share-alt white"> </i>
+    </a>
+  </span>
+</div>
+  <ion-footer-bar class="new-comment post-footer bar bar-footer">
+<div class="row">
+<button class="button button-full button-dark" ng-click="showMe()">
+Tap to comment
+</button>
+  </div>
+    <form name="comment_form" class="row" novalidate>
+      <div class="col col-80 content col-center">
+        <input class="new-comment-message" type="text" placeholder="Leave a comment..." ng-model="new_comment" required></input>
+      </div>
+      <div class="col col-20 button-container col-center">
+        <button class="button button-clear send" type="submit" ng-click="addComment()" ng-disabled="comment_form.$invalid">
+          Send
+        </button>
+      </div>
+    </form>
+  </ion-footer-bar>
+</ion-view>

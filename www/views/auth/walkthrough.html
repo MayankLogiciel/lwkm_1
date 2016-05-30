@@ -1,0 +1,60 @@
+<ion-view view-title="Welcome" class="walkthrough-view">
+
+     <div class="top-contents row">
+      <ion-slide-box on-slide-changed="slideChanged(index)">
+        <ion-slide>
+          <div class="row slide-content">
+            <div class="col">
+              <img class="slide-image" ng-src="img/ionWP1.png"/>
+                <h4 class="slide-h">Comedy from everywhere</h4>
+              <p class="slide-p">
+               Updated Daily!
+              </p>
+            </div>
+          </div>
+        </ion-slide>
+        <ion-slide>
+          <div class="row slide-content">
+            <div class="col">
+              <img class="slide-image" ng-src="img/ionWP2.png"/>
+                <h4 class="slide-h">Bookmark Jokes</h4>
+              <p class="slide-p">
+                Organize your comedy conveniently
+              </p>
+            </div>
+          </div>
+        </ion-slide>
+        <ion-slide>
+          <div class="row slide-content">
+            <div class="col">
+              <img class="slide-image" ng-src="img/ionWP3.png"/>
+                    <h4 class="slide-h">Find it. Laugh at it</h4>
+              <p class="slide-p">
+                Laughter should be easy
+              </p>
+            </div>
+          </div>
+        </ion-slide>
+		<ion-slide>
+          <div class="row slide-content">
+            <div class="col">
+              <img class="slide-image" ng-src="img/ionWP4.png"/>
+                  <h4 class="slide-h">Be Social</h4>
+              <p class="slide-p">
+                Engage
+              </p>
+            </div>
+          </div>
+        </ion-slide>
+      </ion-slide-box>
+</div>
+<div class="bottom-content row">
+  <button class="button login button-full button-clear no-animation "
+               ng-click="next()" ng-show="slideIndex != 3">
+              Next >
+      </button>
+      <button class="button icon-left  button-full button-assertive" ng-click="startApp()" ng-click="startApp()" ng-show="slideIndex == 3">
+           <i class="icon ion-android-walk" style="color: #FFFFFF;"></i> Enter
+          </button>
+    </div>
+</ion-view>

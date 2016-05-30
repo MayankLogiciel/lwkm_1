@@ -1,0 +1,19 @@
+<ion-modal-view>
+	<ion-header-bar class="effect1">
+		<h1 class="titleuni">Submit Video</h1>
+		<div class="button button-clear" ng-click="videos_modal.hide()"><span class="icon ion-close"></span></div>
+	</ion-header-bar>
+	<ion-content>
+		<div class="rates">
+			  <div class="video-image effect4"></div>
+    <p>
+Please send us the link to the comedy video that you would like to feature or attach it and send.
+    </p>
+   <div class="send-email">
+        <button class="button ion-android-arrow-forward button-block button-assertive" ng-controller="EmailSenderCtrl" ng-click="sendVideos()">
+         Proceed
+        </button>
+      </div>
+	</div>
+    </ion-content>
+</ion-modal-view>

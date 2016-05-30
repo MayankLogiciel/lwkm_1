@@ -1,0 +1,19 @@
+<ion-modal-view>
+	<ion-header-bar class="effect1">
+		<h1 class="titleuni">Submit Jokes</h1>
+		<div class="button button-clear" ng-click="jokes_modal.hide()"><span class="icon ion-close"></span></div>
+	</ion-header-bar>
+	<ion-content>
+		<div class="rates">
+			  <div class="joke-image effect4"></div>
+    <p>
+Please submit your funny joke
+    </p>
+  <div class="send-email">
+        <button class="button ion-android-arrow-forward button-block button-assertive" ng-controller="EmailSenderCtrl" ng-click="sendJokes()">
+          Proceed
+        </button>
+      </div>
+	</div>
+    </ion-content>
+</ion-modal-view>
