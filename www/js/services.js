@@ -1,6 +1,6 @@
 angular.module('lwkm.services', [])
 // WP POSTS RELATED FUNCTIONS
-.service('PostService', function ($rootScope, $http, $q, WORDPRESS_API_URL, AuthService, $state,   $ionicLoading, $ionicPopup, BookMarkService){
+.service('PostService', function ($rootScope, $http, $q, WORDPRESS_API_URL, AuthService, $state, $ionicLoading, $ionicPopup, BookMarkService, ConnectivityMonitor, ConnectivityMonitor){
 
   this.postDetails = undefined; //store post details before going to post detail page
 
@@ -37,12 +37,16 @@ angular.module('lwkm.services', [])
     .error(function(data) {
       deferred.reject(data);
       $ionicLoading.hide();
-      $ionicPopup.alert({
-          title: 'Network issues? ',
-          template: 'Its taking too long. You are probably having network issues.Please pull down to refresh and try again',
-       cssClass: 'popup-vertical-buttons', // String, The custom CSS class name
-       okType: 'button-assertive'
-        });
+      if(ConnectivityMonitor.isOffline()){
+        ConnectivityMonitor.showErrorBanner(ConnectivityMonitor.MESSAGES.SOMETHING_WRONG);
+      }else{
+        $ionicPopup.alert({
+            title: 'Network issues? ',
+            template: 'Its taking too long. You are probably having network issues.Please pull down to refresh and try again',
+         cssClass: 'popup-vertical-buttons', // String, The custom CSS class name
+         okType: 'button-assertive'
+          });
+      }
     });
     return deferred.promise;
   };
@@ -83,15 +87,19 @@ angular.module('lwkm.services', [])
     })
     .error(function(data, status) {
       deferred.reject(data);
-	 // An alert dialog
-   $ionicPopup.alert({
-     title: 'Network issues? ',
-     template: 'Its taking too long. You are probably having network issues.Please try again',
-	 cssClass: 'popup-vertical-buttons', // String, The custom CSS class name
-	 okType: 'button-assertive'
-   });
+      if(ConnectivityMonitor.isOffline()){
+        ConnectivityMonitor.showErrorBanner(ConnectivityMonitor.MESSAGES.SOMETHING_WRONG);
+      }else{
+    	 // An alert dialog
+       $ionicPopup.alert({
+         title: 'Network issues? ',
+         template: 'Its taking too long. You are probably having network issues.Please try again',
+    	 cssClass: 'popup-vertical-buttons', // String, The custom CSS class name
+    	 okType: 'button-assertive'
+       });
+      }
 
-});
+    });
 
     return deferred.promise;
   };
@@ -140,13 +148,18 @@ angular.module('lwkm.services', [])
     .error(function(data) {
       deferred.reject(data);
         $ionicLoading.hide();
-	 // An alert dialog
-   $ionicPopup.alert({
-     title: 'Network issues? ',
-     template: 'Its taking too long. You are probably having network issues.Please try again',
-	  cssClass: 'popup-vertical-buttons', // String, The custom CSS class name
-	 okType: 'button-assertive' // String, The custom CSS class name
-   });
+      if(ConnectivityMonitor.isOffline()){
+        ConnectivityMonitor.showErrorBanner(ConnectivityMonitor.MESSAGES.SOMETHING_WRONG);
+      }else{        
+    	 // An alert dialog
+       $ionicPopup.alert({
+         title: 'Network issues? ',
+         template: 'Its taking too long. You are probably having network issues.Please try again',
+    	  cssClass: 'popup-vertical-buttons', // String, The custom CSS class name
+    	 okType: 'button-assertive' // String, The custom CSS class name
+       });
+     }
+
     });
 
     return deferred.promise;
@@ -194,13 +207,19 @@ angular.module('lwkm.services', [])
     .error(function(data) {
       deferred.reject(data);
         $ionicLoading.hide();
-	 // An alert dialog
-   $ionicPopup.alert({
-     title: 'Network issues? ',
-     template: 'Its taking too long. You are probably having network issues.Please try again',
-     cssClass: 'popup-vertical-buttons', // String, The custom CSS class name
-     okType: 'button-assertive'
-   });
+
+      if(ConnectivityMonitor.isOffline()){
+        ConnectivityMonitor.showErrorBanner(ConnectivityMonitor.MESSAGES.SOMETHING_WRONG);
+      }else{          
+    	 // An alert dialog
+       $ionicPopup.alert({
+         title: 'Network issues? ',
+         template: 'Its taking too long. You are probably having network issues.Please try again',
+         cssClass: 'popup-vertical-buttons', // String, The custom CSS class name
+         okType: 'button-assertive'
+       });
+     }
+
     });
     return deferred.promise;
   };
@@ -209,7 +228,7 @@ angular.module('lwkm.services', [])
 
 
 // SEARCH MENU RELATED FUNCTIONS
-.service('SearchService', function ($rootScope, $http, $q, $ionicLoading, $ionicPopup, WORDPRESS_API_URL){
+.service('SearchService', function ($rootScope, $http, $q, $ionicLoading, $ionicPopup, WORDPRESS_API_URL, ConnectivityMonitor){
 
   this.search = function(query) {
 
@@ -262,13 +281,19 @@ angular.module('lwkm.services', [])
     .error(function(data) {
         $ionicLoading.hide();
       deferred.reject(data);
-	 // An alert dialog
-   $ionicPopup.alert({
-     title: 'Network issues? ',
-     template: 'Its taking too long. You are probably having network issues.Please try again',
-	 cssClass: 'popup-vertical-buttons', // String, The custom CSS class name
-	 okType: 'button-assertive' // String, The custom CSS class name
-   });
+
+      if(ConnectivityMonitor.isOffline()){
+        ConnectivityMonitor.showErrorBanner(ConnectivityMonitor.MESSAGES.SOMETHING_WRONG);
+      }else{       
+    	 // An alert dialog
+       $ionicPopup.alert({
+         title: 'Network issues? ',
+         template: 'Its taking too long. You are probably having network issues.Please try again',
+    	 cssClass: 'popup-vertical-buttons', // String, The custom CSS class name
+    	 okType: 'button-assertive' // String, The custom CSS class name
+       });
+     }
+
     });
     return deferred.promise;
   };
@@ -416,7 +441,7 @@ angular.module('lwkm.services', [])
 
 
 // WP AUTHENTICATION RELATED FUNCTIONS
-.service('AuthService', function ($rootScope, $http, $q, $ionicPopup, WORDPRESS_API_URL){
+.service('AuthService', function ($rootScope, $http, $q, $ionicPopup, WORDPRESS_API_URL, ConnectivityMonitor){
 
   this.validateAuth = function(user) {
     var deferred = $q.defer();
@@ -580,14 +605,19 @@ angular.module('lwkm.services', [])
     .error(function(data) {
       deferred.reject(data);
 	    $ionicLoading.hide();
-	 // An alert dialog
-   $ionicPopup.alert({
-     title: 'Network issues? ',
-     template: 'Its taking too long(18 seconds). You are probably having network issues.Please try again',
-	 cssClass: 'popup-vertical-buttons', // String, The custom CSS class name
-	 okType: 'button-assertive' // String, The custom CSS class name
+      if(ConnectivityMonitor.isOffline()){
+        ConnectivityMonitor.showErrorBanner(ConnectivityMonitor.MESSAGES.SOMETHING_WRONG);
+      }else{        
+    	 // An alert dialog
+       $ionicPopup.alert({
+         title: 'Network issues? ',
+         template: 'Its taking too long(18 seconds). You are probably having network issues.Please try again',
+    	 cssClass: 'popup-vertical-buttons', // String, The custom CSS class name
+    	 okType: 'button-assertive' // String, The custom CSS class name
 
-   });
+       });
+     }
+
     });
     return deferred.promise;
   };

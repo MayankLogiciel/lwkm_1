@@ -232,4 +232,85 @@ angular.module('lwkm.factories', [])
       return deferred.promise;
     }
   };
+})
+
+.factory('ConnectivityMonitor', function($rootScope, $cordovaNetwork, $ionicContentBanner, $timeout){
+    var contentBannerInstance = null;
+    var MESSAGES = {
+      'SOMETHING_WRONG' : 'Something went wrong. Please try again.',
+      'GOES_ONLINE' : 'You are now connected.',
+      'GOES_OFFLINE' : 'Network unavailable.'
+    };
+
+    /**
+     * show content banner
+     * @param  {String} text       text to show on banner
+     * @param  {String} type       type of banner(error|info)
+     * @param  {String} transition banner show/hide transition(vertical|fade)
+     * @param  {Integer} autoClose close banner after these milliseconds
+     */
+    var showContentBanner = function(text, type, transition, autoClose){
+        //close first if already open
+        if (contentBannerInstance) {
+            contentBannerInstance();
+            contentBannerInstance = null;
+        }
+
+        $timeout(function(){
+            contentBannerInstance = $ionicContentBanner.show({
+              text: [text],
+              //interval: 3000,
+              autoClose: autoClose || 10000,
+              type: type || 'error',
+              transition: transition || 'fade'
+            });                
+        }, 1000);
+
+    };
+
+    return {
+        MESSAGES: MESSAGES,
+        isOnline: function(){
+            if(ionic.Platform.isWebView()){
+                return $cordovaNetwork.isOnline();    
+            } else {
+                return navigator.onLine;
+            }
+        },
+        isOffline: function(){
+            if(ionic.Platform.isWebView()){
+                return !$cordovaNetwork.isOnline();    
+            } else {
+                return !navigator.onLine;
+            }
+        },
+        showErrorBanner: function(msg){
+            showContentBanner(msg, 'error', 'vertical', 10000);          
+        },
+        startWatching: function(){
+            if(ionic.Platform.isWebView()){
+     
+                $rootScope.$on('$cordovaNetwork:online', function(event, networkState){
+                    console.log("went online");
+                });
+
+                $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
+                    console.log("went offline");
+                });
+     
+            }
+            else {
+     
+                window.addEventListener("online", function(e) {
+                    console.log("went online");
+                    showContentBanner(MESSAGES.GOES_ONLINE, 'error', 'vertical', 10000);         
+                }, false);    
+
+                window.addEventListener("offline", function(e) {
+                    console.log("went offline");
+                    showContentBanner(MESSAGES.GOES_OFFLINE, 'error', 'fade', 60000);          
+                }, false);  
+            }
+        }
+    }
 });

@@ -9,7 +9,8 @@
     "underscore": "~1.8.3",
     "angular-moment": "~0.10.1",
     "bourbon": "~4.2.3",
-    "angular-youtube-mb": "~1.1.0"
+    "angular-youtube-mb": "~1.1.0",
+    "ionic-content-banner": "^1.0.1"
   },
   "resolutions": {
     "angular-animate": "1.4.3",

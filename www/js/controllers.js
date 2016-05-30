@@ -772,9 +772,11 @@ $scope.slideChanged = function(index) {
       	function(data){
             $scope.totalPages = data.pages;
             $scope.posts = PostService.shortenPosts(data.posts);
-            $scope.$broadcast('scroll.refreshComplete');
+            //$scope.$broadcast('scroll.refreshComplete');
           }
-      	);
+        ).finally(function(){
+          $scope.$broadcast('scroll.refreshComplete');
+        });
       }
 
 	 };
@@ -788,7 +790,8 @@ $scope.slideChanged = function(index) {
       $scope.totalPages = data.pages;
       var new_posts = PostService.shortenPosts(data.posts);
       $scope.posts = $scope.posts.concat(new_posts);
-
+      //$scope.$broadcast('scroll.infiniteScrollComplete');
+    }).finally(function(){
       $scope.$broadcast('scroll.infiniteScrollComplete');
     });
   };
@@ -1166,6 +1169,8 @@ if(AdMob) AdMob.showInterstitial();
         .then(function(data){
           $scope.totalPages = data.pages;
           $scope.posts = PostService.shortenPosts(data.posts);
+          //$scope.$broadcast('scroll.refreshComplete');
+        }).finally(function(){
           $scope.$broadcast('scroll.refreshComplete');
         });
       }
@@ -1180,6 +1185,8 @@ if(AdMob) AdMob.showInterstitial();
       var new_posts = PostService.shortenPosts(data.posts);
       $scope.posts = $scope.posts.concat(new_posts);
 
+      //$scope.$broadcast('scroll.infiniteScrollComplete');
+    }).finally(function(){
       $scope.$broadcast('scroll.infiniteScrollComplete');
     });
   };
