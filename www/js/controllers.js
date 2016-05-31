@@ -3,7 +3,14 @@ angular.module('lwkm.controllers', [])
 // APP - RIGHT MENU
 .controller('AppCtrl', function($scope, AuthService) {
 
+    $scope.isUserAlreadyLoggedIn = AuthService.isUserAlreadyLoggedIn();
+
 	  if(typeof analytics !== "undefined") {analytics.trackView("Menu");}
+
+    $scope.$on("login:logout:changed", function(){
+      //Re-evaluate value
+      $scope.isUserAlreadyLoggedIn = AuthService.isUserAlreadyLoggedIn();
+    });
 
 })
 
@@ -668,7 +675,7 @@ $scope.slideChanged = function(index) {
 })
 
 //LOGIN
-.controller('LoginCtrl', function($scope, $state, $ionicLoading, AuthService, PushNotificationsService) {
+.controller('LoginCtrl', function($rootScope, $scope, $timeout, $state, $ionicLoading, AuthService) {
   $scope.user = {};
 
   $scope.doLogin = function(){
@@ -687,6 +694,10 @@ $scope.slideChanged = function(index) {
       //success
       $state.go('app.home');
 
+      $timeout(function(){
+        $rootScope.$broadcast("login:logout:changed");
+      },1000);
+      
       $ionicLoading.hide();
     },function(err){
       //err
@@ -721,7 +732,7 @@ $scope.slideChanged = function(index) {
 
 
 // REGISTER
-.controller('RegisterCtrl', function($scope, $state, $ionicLoading, AuthService, PushNotificationsService) {
+.controller('RegisterCtrl', function($scope, $state, $ionicLoading, AuthService) {
   $scope.user = {};
 
   $scope.doRegister = function(){

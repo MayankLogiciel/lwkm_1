@@ -28,15 +28,15 @@
            <span class="title">Info</span>
          </a>
    <div class="item item-divider">ACCOUNT</div>
-      <a class="item option" ng-click="showLogOutMenu()">
+      <a class="item option" ng-click="showLogOutMenu()" ng-if="isUserAlreadyLoggedIn">
         <i class="icon ion-power"></i>
         <span class="title">Log out</span>
       </a>
       <a class="item option" ng-click="showLogOutMenu()">
         <i class="icon ion-person-add"></i>
-        <span class="title">Register </span>
+        <span class="title">Register</span>
       </a>
-      <a class="item option" ng-click="showLogOutMenu()">
+      <a class="item option" ng-click="showLogOutMenu()" ng-if="!isUserAlreadyLoggedIn">
         <i class="icon ion-log-in"></i>
         <span class="title">Log in </span>
       </a>

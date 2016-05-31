@@ -114,7 +114,7 @@ angular.module('lwkm.services', [])
     '?post_id='+ postId +
     '&cookie='+ user.cookie +
     '&comment_status=1' +
-     '&insecure=cool' +
+    '&insecure=cool' + //Mayank
     '&content='+ content +
     '&callback=JSON_CALLBACK',
         timeout : 15000
@@ -488,6 +488,7 @@ angular.module('lwkm.services', [])
           authService.updateUserAvatar().then(function(){
             deferred.resolve(user);
           });
+
         }
       });
     });
@@ -559,6 +560,7 @@ angular.module('lwkm.services', [])
     '?username='+ username +
     '&password=' + password +
     '&nonce='+ nonce +
+    '&insecure=cool' + //Mayank
     '&callback=JSON_CALLBACK')
     .success(function(data) {
       deferred.resolve(data);
@@ -639,12 +641,29 @@ angular.module('lwkm.services', [])
     return deferred.promise;
   };
 
+  /**
+   * check user is already logged in or not from localStorage values
+   * @return {Boolean}
+   */
+  this.isUserAlreadyLoggedIn = function(){
+    
+    if( angular.isDefined(window.localStorage.ionWordpress_user) 
+        && window.localStorage.ionWordpress_user != null
+        && window.localStorage.ionWordpress_user != "null" ){
+      return true;
+    }else{
+      return false;
+    }
+
+  };
+
   this.logOut = function(){
     //empty user data
 
     window.localStorage.ionWordpress_user = null;
     window.localStorage.ionWordpress_user_avatar = null;
     // window.localStorage.ionWordpress_bookmarks = null;
+    $rootScope.$broadcast("login:logout:changed");
   };
 
   //update user avatar from WP
@@ -656,12 +675,12 @@ angular.module('lwkm.services', [])
     $http.jsonp(WORDPRESS_API_URL + 'user/get_avatar/' +
     '?user_id='+ user.user_id +
     '&type=full' +
+    '&insecure=cool' + //Mayank
     '&callback=JSON_CALLBACK')
     .success(function(data) {
 
       var avatar_aux = data.avatar.replace("http:", "");
       var avatar = 'http:' + avatar_aux;
-
       window.localStorage.ionWordpress_user_avatar =  JSON.stringify(avatar);
 
       avatar_dfd.resolve(avatar);
