@@ -7,13 +7,9 @@
   </ion-nav-title>
   <ion-content>
     <ul class="list">
- <div class="item item-divider">Push Notifications</div>
- <ion-toggle ng-model="notifications" toggle-class="toggle-dark">Push Notifications</ion-toggle>
-      <div class="row">
-      <div class="col"><button class="button button-block button-assertive" onclick="registerPushwoosh();">On</button></div>
-          <div class="col"><button class="button button-block button-assertive" onclick="unregisterPushwoosh();">Off</button></div>
-   </div>
-   <div class="item item-divider">OPTIONS</div>
+ <div class="item item-divider" >Push Notifications</div>
+ <ion-toggle ng-model="notifications" ng-change="togglePushwooshNotifications(notifications)" toggle-class="toggle-dark">Push Notifications</ion-toggle>
+      <div class="item item-divider">OPTIONS</div>
       <a class="item option" ng-controller="EmailSenderCtrl" ng-click="sendFeedback()">
         <i class="icon ion-chatbox dark"></i>
         <span class="title">Send feedback</span>

@@ -134,10 +134,22 @@ if(typeof analytics !== "undefined") { analytics.trackView("Contact Page"); }
 // SETTINGS
 .controller('SettingCtrl', function($scope, $ionicActionSheet, $ionicModal, $state, $ionicPopover, $ionicPopup, $cordovaEmailComposer, AuthService) {
   if(typeof analytics !== "undefined") { analytics.trackView("Settings Page"); }
-	 if(typeof Appsee !== "undefined") {Appsee.startScreen("Settings Page");}
-  $scope.notifications = true;
+  if(typeof Appsee !== "undefined") {Appsee.startScreen("Settings Page");}
+  
+  $scope.notifications = getInitialPushSettingValue();
   $scope.sendLocation = false;
 
+  /**
+   * get user preference value for push notification
+   * @return {Boolean}
+   */
+  function getInitialPushSettingValue(){
+    if( angular.isUndefined(window.localStorage['Pushwoosh']) ) {
+      return true;
+    }else{
+      return window.localStorage['Pushwoosh'] === "true" ? true : false;
+    }
+  }
 
   $ionicModal.fromTemplateUrl('views/common/faqs.html', {
     scope: $scope,
@@ -294,6 +306,20 @@ if(typeof analytics !== "undefined") { analytics.trackView("Contact Page"); }
 
 
   };
+
+  /**
+   * toggle user preference for push notificaitons
+   * @param  {Boolean} newState  user's new preference
+   */
+  $scope.togglePushwooshNotifications = function( newState ){
+    if( newState ){
+      registerPushwoosh();
+    }else{
+      unregisterPushwoosh();
+    }
+
+  };
+
   $scope.popLogin = function() {
   $state.go('login');
    $scope.popover.hide();
@@ -351,7 +377,6 @@ if(typeof analytics !== "undefined") { analytics.trackView("Contact Page"); }
 .controller('SubmitCtrl', function($scope, $ionicActionSheet, $ionicModal, $state, AuthService) {
   if(typeof analytics !== "undefined") { analytics.trackView("Submission Page"); }
  if(typeof Appsee !== "undefined") {Appsee.startScreen("Submission Page");}
-  $scope.notifications = true;
   $scope.sendLocation = false;
 
   $ionicModal.fromTemplateUrl('views/common/pictures.html', {

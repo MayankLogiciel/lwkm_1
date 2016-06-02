@@ -17,65 +17,58 @@
      * specific language governing permissions and limitations
      * under the License.
      */
-     function initPushwoosh() {
+    var pushNotification;
 
-          var pushNotification = window.plugins.pushNotification;
-          //set push notifications handler
-                        document.addEventListener('push-notification', function(event) {
-                            var title = event.notification.title;
-                            var userData = event.notification.userdata;
+    function initPushwoosh() {
 
-                            if(typeof(userData) != "undefined") {
-                                console.warn('user data: ' + JSON.stringify(userData));
-                            }
-                        });
+        //var pushNotification = window.plugins.pushNotification;
+        pushNotification = cordova.require("pushwoosh-cordova-plugin.PushNotification");
+        //set push notifications handler
+        document.addEventListener('push-notification', function(event) {
 
+            var title = event.notification.title;
+            var userData = event.notification.userdata;
 
-
-         if(typeof window.localStorage['Pushwoosh'] === null || window.localStorage['Pushwoosh'] === 'true' ){
-
-                       //initialize Pushwoosh with projectid: "GOOGLE_PROJECT_ID", appid : "PUSHWOOSH_APP_ID". This will trigger all pending push notifications on start.
-                       pushNotification.onDeviceReady({projectid: "34217462939", appid : "DF794-D3556" });
-            //register for pushes
-        			pushNotification.registerDevice(
-        					function(status) {
-        							var pushToken = status;
-        							console.warn('push token: ' + pushToken);
-        							window.localStorage['Pushwoosh'] = 'true';
-        					},
-        					function(status) {
-        							console.warn(JSON.stringify(['failed to register ', status]));
-        					}
-        			);
-        		}else{
-              pushNotification.unregisterDevice(function(token) {
-
-            									},
-            									function(status) {
-
-            									    console.warn(JSON.stringify(['failed to unregister ', status]));
-            									});
-
-
+            if(typeof(userData) != "undefined") {
+                console.warn('user data: ' + JSON.stringify(userData));
             }
+        });
 
+        if(typeof window.localStorage['Pushwoosh'] === null || angular.isUndefined(window.localStorage['Pushwoosh']) || window.localStorage['Pushwoosh'] === 'true' ){
+            //initialize Pushwoosh with projectid: "GOOGLE_PROJECT_ID", appid : "PUSHWOOSH_APP_ID". This will trigger all pending push notifications on start.
+            pushNotification.onDeviceReady({projectid: "34217462939", appid : "DF794-D3556" });
+            //register for pushes
+            console.warn('Pushwoosh registering');
+            pushNotification.registerDevice(
+                function(status) {
+                    var pushToken = status;
+                    console.warn('push token: ' + pushToken);
+                    window.localStorage['Pushwoosh'] = 'true';
+                },
+                function(status) {
+                    console.warn(JSON.stringify(['failed to register ', status]));
+                }
+             );
         }
 
-        function registerPushwoosh() {
-         window.localStorage['Pushwoosh'] = 'true';
-alert('Congratulations! You just enabled notifications');
-               }
+    }
 
-               function unregisterPushwoosh() {
-                 alert('Congratulations! You just disabled notifications');
-                   window.localStorage['Pushwoosh'] = 'false';
-                   //Unregisters device from push notifications
-                   pushNotification.unregisterDevice(function(token) {
-                 									},
-                 									function(status) {
-                 										alert("failed to unregister: " +  status);
-                 									    console.warn(JSON.stringify(['failed to unregister ', status]));
-                 									});
+    function registerPushwoosh() {
+       window.localStorage['Pushwoosh'] = 'true';
+       alert('Congratulations! You just enabled notifications');
+    }
 
+    function unregisterPushwoosh() {
+        alert('Congratulations! You just disabled notifications');
+        window.localStorage['Pushwoosh'] = 'false';
+        //Unregisters device from push notifications
+        pushNotification.unregisterDevice(
+            function(token) {
+                console.warn(token);
+            },
+            function(status) {
+                console.warn(JSON.stringify(['failed to unregister ', status]));
+            }
+        );
 
-                      }
+    }

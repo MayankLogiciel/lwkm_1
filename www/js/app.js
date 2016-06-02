@@ -27,106 +27,114 @@ angular.module('lwkm', [
   ])
 
 .run(function($ionicPlatform, $cordovaSplashscreen, $state, $timeout,  $rootScope, $ionicPopup, $ionicHistory, $cordovaNetwork, $ionicLoading, $cordovaToast, AuthService, ConnectivityMonitor) {
-   $ionicPlatform.on("deviceready", function (){
-   // At the start of this controller
-  // Lets check local storage for didTutorial
-  if (window.localStorage.didTutorial === 'true') {
-    // If it we did do the tutorial, lets call
-    // $scope.startApp
-    $timeout(function() {
-      navigator.splashscreen.hide();
-  }, 1000);
-    $state.go('app.home');
+   
 
-} else {
-    // If we didn't do the tutorial,
-    $state.go('walkthrough');
-    $timeout(function() {
-      navigator.splashscreen.hide();
-  }, 1000);
+  $ionicPlatform.ready(function(){
 
-}
+    // At the start of this controller
+    // Lets check local storage for didTutorial
+    if (window.localStorage.didTutorial === 'true') {
+      // If it we did do the tutorial, lets call
+      // $scope.startApp
+      $timeout(function() {
+        navigator.splashscreen.hide();
+      }, 1000);
+      $state.go('app.home');
 
-// Initialize Push Notifications
-        // Uncomment the following initialization when you have made the appropriate configuration for iOS - http://goo.gl/YKQL8k and for Android - http://goo.gl/SPGWDJ
-        initPushwoosh();
-   // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-   // for form inputs)
-   if (window.cordova && window.cordova.plugins.Keyboard) {
-       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-   }
+    } else {
+      // If we didn't do the tutorial,
+      $state.go('walkthrough');
+      $timeout(function() {
+          navigator.splashscreen.hide();
+      }, 1000);
 
-		//Google Analytics
-		if(typeof analytics !== undefined) {
-           analytics.startTrackerWithId("UA-65294016-2");
-       } else {
-           console.log("Google Analytics Unavailable");
-       }
-             //Appsee Analytics
-             if(typeof Appsee !== undefined) {
-                 Appsee.start("1af9e379a0464a8fbd60603bc9a99e2d");
+    }
 
-             } else {
-                 console.log("Appsee Analytics Unavailable");
-             }
-//admob ads
-var admobid = {};
-        // select the right Ad Id according to platform
-        if( /(android)/i.test(navigator.userAgent) ) {
-            admobid = { // for Android
-              banner: 'ca-app-pub-2007428953027611/5187867689',
-              interstitial: 'ca-app-pub-2007428953027611/6664600882'
-          };
-      } else if(/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {
-            admobid = { // for iOS
-              banner: '',
-              interstitial: ''
-          };
-      } else {
-            admobid = { // for Windows Phone
-              banner: '',
-              interstitial: ''
-          };
+    // Initialize Push Notifications
+    // Uncomment the following initialization when you have made the appropriate configuration for iOS - http://goo.gl/YKQL8k and for Android - http://goo.gl/SPGWDJ
+    initPushwoosh();
+   
+    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+    // for form inputs)
+    if (window.cordova && window.cordova.plugins.Keyboard) {
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+    }
+
+    //Google Analytics
+    if(typeof analytics !== undefined) {
+      analytics.startTrackerWithId("UA-65294016-2");
+    } else {
+      console.log("Google Analytics Unavailable");
+    }
+    
+    //Appsee Analytics
+    if(typeof Appsee !== undefined) {
+      Appsee.start("1af9e379a0464a8fbd60603bc9a99e2d");
+
+    } else {
+      console.log("Appsee Analytics Unavailable");
+    }
+
+    //admob ads
+    var admobid = {};
+    // select the right Ad Id according to platform
+    if( /(android)/i.test(navigator.userAgent) ) {
+      admobid = { // for Android
+        banner: 'ca-app-pub-2007428953027611/5187867689',
+        interstitial: 'ca-app-pub-2007428953027611/6664600882'
+      };
+    } else if(/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {
+      admobid = { // for iOS
+        banner: '',
+        interstitial: ''
+      };
+    } else {
+      admobid = { // for Windows Phone
+        banner: '',
+        interstitial: ''
+      };
+    }
+
+    if(window.AdMob) 
+    AdMob.createBanner({
+      adId:admobid.banner,
+      position:AdMob.AD_POSITION.BOTTOM_CENTER,
+      overlap: true,
+      autoShow:false
+    });
+    // prepare and load ad resource in background, e.g. at begining of game level
+    if(AdMob) AdMob.prepareInterstitial( {adId:admobid.interstitial, overlap: true, autoShow:false} );
+
+
+    // for form inputs)
+    var AdLoaded = false;
+    var BlackHidden = false;
+    document.addEventListener('onAdLoaded', function (e) { AdLoaded = true; });
+    window.addEventListener('native.keyboardhide', keyboardHideHandler);
+
+    function keyboardHideHandler(e) {
+      if (AdLoaded && !BlackHidden) {
+        AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);
+        BlackHidden = true;
       }
+    }    
 
-      if(window.AdMob) AdMob.createBanner( {
-        adId:admobid.banner,
-        position:AdMob.AD_POSITION.BOTTOM_CENTER,
-        overlap: true,
-        autoShow:false} );
-      // prepare and load ad resource in background, e.g. at begining of game level
-      if(AdMob) AdMob.prepareInterstitial( {adId:admobid.interstitial, overlap: true, autoShow:false} );
-
-
- // for form inputs)
- var AdLoaded = false;
- var BlackHidden = false;
- document.addEventListener('onAdLoaded', function (e) { AdLoaded = true; });
- window.addEventListener('native.keyboardhide', keyboardHideHandler);
- function keyboardHideHandler(e) {
-     if (AdLoaded && !BlackHidden) {
-
-       AdMob.showBanner(AdMob.AD_POSITION.BOTTOM_CENTER);
-       BlackHidden = true;
-
-   }
-}
-});
-   $ionicPlatform.on("resume", function(){
-      e.preventDefault();
+  
   });
-  // Disable BACK button on home
 
+  $ionicPlatform.on("resume", function(){
+      //e.preventDefault();
+  });
+
+  // Disable BACK button on home
   $ionicPlatform.registerBackButtonAction(function (event) {
     if($state.current.name=="app.home"){
       event.preventDefault();
       ionic.Platform.exitApp();
-
-  }
-  else if ($state.current.name=="app.category"){
+    } else if ($state.current.name=="app.category"){
       $ionicHistory.nextViewOptions({
-         disableBack: true
-     });
+        disableBack: true
+      });
       $state.go('app.home');
           //go to home page
       } else{
@@ -134,34 +142,33 @@ var admobid = {};
       }
   }, 100);
 
-    //general offline check
-    // listen for Offline event
-    // $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
-    //     alert('offline');
-    //     if($state.current.name=="app.post"){
-    //         console.log("offlinemonitoring state not allowed");
-    //     }else{
-    //         $cordovaToast.show("You are Offline. You won't be able to watch videos or download",7000, "bottom");
-    //     }
-    // });
+  //general offline check
+  // listen for Offline event
+  // $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
+  //     alert('offline');
+  //     if($state.current.name=="app.post"){
+  //         console.log("offlinemonitoring state not allowed");
+  //     }else{
+  //         $cordovaToast.show("You are Offline. You won't be able to watch videos or download",7000, "bottom");
+  //     }
+  // });
 
-    //start watching online/offline event
-    ConnectivityMonitor.startWatching();
+  //start watching online/offline event
+  ConnectivityMonitor.startWatching();
 
-   // UI Router Authentication Check
-   $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
-    if (toState.data.authenticate)
-    {
-       AuthService.userIsLoggedIn().then(function(response)
-       {
-         if(response === false)
-         {
+  // UI Router Authentication Check
+  $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
+    if (toState.data.authenticate){
+      AuthService.userIsLoggedIn().then(
+        function(response){
+          if(response === false){
            event.preventDefault();
            $state.go('app.home');
-       }
-   });
-   }
-});
+          }
+        }
+      );
+    }
+  });
 
 })
 

@@ -58,7 +58,8 @@
 	<plugin name="cordova-plugin-splashscreen" spec="2.0.0" source="npm"/>
 	<plugin name="cordova-plugin-x-socialsharing" spec="5.0.11" source="npm"/>
 	<plugin name="cordova-plugin-x-toast" spec="2.5.0" source="npm"/>
-	<plugin name="pushwoosh-cordova-plugin" spec="4.2.2" source="npm"/>
+	<!-- <plugin name="pushwoosh-cordova-plugin" spec="4.2.2" source="npm"/> -->
+  <gap:plugin name="pushwoosh-pgb-plugin" source="npm"/>
 	<plugin name="cordova-plugin-google-analytics" spec="0.8.1" source="npm"/>
 	<plugin name="cordova-plugin-ionic-keyboard" spec="1.0.5" source="npm"/>
 	<plugin name="cordova-plugin-appsee" spec="2.2.1" source="npm"/>
