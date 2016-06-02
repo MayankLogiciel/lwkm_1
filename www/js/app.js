@@ -118,7 +118,6 @@ angular.module('lwkm', [
         BlackHidden = true;
       }
     }    
-
   
   });
 
