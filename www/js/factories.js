@@ -242,6 +242,9 @@ angular.module('lwkm.factories', [])
       'GOES_OFFLINE' : 'Network unavailable.'
     };
 
+    //read - https://forum.ionicframework.com/t/online-and-offline-event-are-firing-2-times-in-a-row/15839
+    //http://www.yourtechchick.com/angularjs/ionic/cordovanetwork-online-and-offline-events-fired-twice/
+
     /**
      * show content banner
      * @param  {String} text       text to show on banner
@@ -291,11 +294,13 @@ angular.module('lwkm.factories', [])
             if(ionic.Platform.isWebView()){
      
                 $rootScope.$on('$cordovaNetwork:online', function(event, networkState){
-                    console.log("went online");
+                  console.log("went online");
+                  showContentBanner(MESSAGES.GOES_ONLINE, 'error', 'vertical', 10000);         
                 });
 
                 $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
-                    console.log("went offline");
+                  console.log("went offline");
+                  showContentBanner(MESSAGES.GOES_OFFLINE, 'error', 'fade', 60000);
                 });
      
             }
@@ -303,12 +308,12 @@ angular.module('lwkm.factories', [])
      
                 window.addEventListener("online", function(e) {
                     console.log("went online");
-                    showContentBanner(MESSAGES.GOES_ONLINE, 'error', 'vertical', 10000);         
+                    showContentBanner(MESSAGES.GOES_ONLINE, 'error', 'vertical', 10000);
                 }, false);    
 
                 window.addEventListener("offline", function(e) {
                     console.log("went offline");
-                    showContentBanner(MESSAGES.GOES_OFFLINE, 'error', 'fade', 60000);          
+                    showContentBanner(MESSAGES.GOES_OFFLINE, 'error', 'fade', 60000);
                 }, false);  
             }
         }
