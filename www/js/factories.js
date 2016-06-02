@@ -244,6 +244,7 @@ angular.module('lwkm.factories', [])
 
     //read - https://forum.ionicframework.com/t/online-and-offline-event-are-firing-2-times-in-a-row/15839
     //http://www.yourtechchick.com/angularjs/ionic/cordovanetwork-online-and-offline-events-fired-twice/
+    var isInternetConnected = true; // used to solve firing twice offline event on android devices
 
     /**
      * show content banner
@@ -294,11 +295,15 @@ angular.module('lwkm.factories', [])
             if(ionic.Platform.isWebView()){
      
                 $rootScope.$on('$cordovaNetwork:online', function(event, networkState){
+                  if(isInternetConnected) return;
+                  isInternetConnected= true;
                   console.log("went online");
                   showContentBanner(MESSAGES.GOES_ONLINE, 'error', 'vertical', 10000);         
                 });
 
                 $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
+                  if(!isInternetConnected) return;
+                  isInternetConnected= false;
                   console.log("went offline");
                   showContentBanner(MESSAGES.GOES_OFFLINE, 'error', 'fade', 60000);
                 });
