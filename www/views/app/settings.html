@@ -28,7 +28,7 @@
         <i class="icon ion-power"></i>
         <span class="title">Log out</span>
       </a>
-      <a class="item option" ng-click="showLogOutMenu()">
+      <a class="item option" ui-sref="register" ng-if="!isUserAlreadyLoggedIn">
         <i class="icon ion-person-add"></i>
         <span class="title">Register</span>
       </a>
