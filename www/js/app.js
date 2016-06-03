@@ -36,17 +36,17 @@ angular.module('lwkm', [
     if (window.localStorage.didTutorial === 'true') {
       // If it we did do the tutorial, lets call
       // $scope.startApp
-      $timeout(function() {
-        navigator.splashscreen.hide();
-      }, 1000);
+      // $timeout(function() {
+      //   navigator.splashscreen.hide();
+      // }, 1000);
       $state.go('app.home');
 
     } else {
       // If we didn't do the tutorial,
       $state.go('walkthrough');
-      $timeout(function() {
-          navigator.splashscreen.hide();
-      }, 1000);
+      // $timeout(function() {
+      //     navigator.splashscreen.hide();
+      // }, 1000);
 
     }
 
@@ -239,7 +239,7 @@ data: {
     }
 },
 data: {
-  authenticate: true
+  authenticate: false
 }
 })
 
@@ -421,7 +421,7 @@ resolve: {
 
   ;
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/home');
+  //$urlRouterProvider.otherwise('/app/home'); //Mayank
 })
 
 ;
