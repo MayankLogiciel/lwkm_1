@@ -264,11 +264,11 @@ angular.module('lwkm.factories', [])
             contentBannerInstance = $ionicContentBanner.show({
               text: [text],
               //interval: 3000,
-              autoClose: autoClose || 10000,
+              autoClose: autoClose || 2000,
               type: type || 'error',
               transition: transition || 'fade'
             });                
-        }, 1000);
+        }, 200);
 
     };
 
@@ -298,14 +298,14 @@ angular.module('lwkm.factories', [])
                   if(isInternetConnected) return;
                   isInternetConnected= true;
                   console.log("went online");
-                  showContentBanner(MESSAGES.GOES_ONLINE, 'error', 'vertical', 10000);         
+                  showContentBanner(MESSAGES.GOES_ONLINE, 'error', 'vertical', 2000);         
                 });
 
                 $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
                   if(!isInternetConnected) return;
                   isInternetConnected= false;
                   console.log("went offline");
-                  showContentBanner(MESSAGES.GOES_OFFLINE, 'error', 'fade', 60000);
+                  showContentBanner(MESSAGES.GOES_OFFLINE, 'error', 'fade', 60*60000);
                 });
      
             }
@@ -313,12 +313,12 @@ angular.module('lwkm.factories', [])
      
                 window.addEventListener("online", function(e) {
                     console.log("went online");
-                    showContentBanner(MESSAGES.GOES_ONLINE, 'error', 'vertical', 10000);
+                    showContentBanner(MESSAGES.GOES_ONLINE, 'error', 'vertical', 2000);
                 }, false);    
 
                 window.addEventListener("offline", function(e) {
                     console.log("went offline");
-                    showContentBanner(MESSAGES.GOES_OFFLINE, 'error', 'fade', 60000);
+                    showContentBanner(MESSAGES.GOES_OFFLINE, 'error', 'fade', 60*60000);
                 }, false);  
             }
         }
