@@ -47,13 +47,13 @@
     </a>
   </span>
 </div>
-  <ion-footer-bar class="new-comment post-footer bar bar-footer" ng-if="isUserAlreadyLoggedIn">
-<div class="row">
-<button class="button button-full button-dark" ng-click="showMe()">
-Tap to comment
-</button>
-  </div>
-    <form name="comment_form" class="row" novalidate>
+  <ion-footer-bar class="new-comment post-footer bar bar-footer">
+    <div class="row" ng-if="!isUserAlreadyLoggedIn">
+      <button class="button button-full button-dark" ng-click="showMe()">
+      Tap to comment
+      </button>
+    </div>
+    <form name="comment_form" class="row" novalidate ng-if="isUserAlreadyLoggedIn">
       <div class="col col-80 content col-center">
         <input class="new-comment-message" type="text" placeholder="Leave a comment..." ng-model="new_comment" required></input>
       </div>
