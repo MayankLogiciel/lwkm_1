@@ -242,9 +242,14 @@ angular.module('lwkm.factories', [])
       'GOES_OFFLINE' : 'Network unavailable.'
     };
 
+    var closeOfflineBannerAfter = 60*60*1000;
+    var closeOnlineBannerAfter = 2*1000;
+    var closeOtherBannerAfter = 10*1000;
+
     //read - https://forum.ionicframework.com/t/online-and-offline-event-are-firing-2-times-in-a-row/15839
     //http://www.yourtechchick.com/angularjs/ionic/cordovanetwork-online-and-offline-events-fired-twice/
     var isInternetConnected = true; // used to solve firing twice offline event on android devices
+    
 
     /**
      * show content banner
@@ -254,17 +259,17 @@ angular.module('lwkm.factories', [])
      * @param  {Integer} autoClose close banner after these milliseconds
      */
     var showContentBanner = function(text, type, transition, autoClose){
-        //close first if already open
-        if (contentBannerInstance) {
-            contentBannerInstance();
-            contentBannerInstance = null;
-        }
 
         $timeout(function(){
+            //close first if already open
+            if (contentBannerInstance) {
+                contentBannerInstance();
+                contentBannerInstance = null;
+            }
+
             contentBannerInstance = $ionicContentBanner.show({
               text: [text],
-              //interval: 3000,
-              autoClose: autoClose || 2000,
+              autoClose: autoClose || closeOnlineBannerAfter,
               type: type || 'error',
               transition: transition || 'fade'
             });                
@@ -289,7 +294,7 @@ angular.module('lwkm.factories', [])
             }
         },
         showErrorBanner: function(msg){
-            showContentBanner(msg, 'error', 'vertical', 10000);          
+            showContentBanner(msg, 'error', 'fade', closeOtherBannerAfter);          
         },
         startWatching: function(){
             if(ionic.Platform.isWebView()){
@@ -298,28 +303,29 @@ angular.module('lwkm.factories', [])
                   if(isInternetConnected) return;
                   isInternetConnected= true;
                   console.log("went online");
-                  showContentBanner(MESSAGES.GOES_ONLINE, 'error', 'vertical', 2000);         
+                  showContentBanner(MESSAGES.GOES_ONLINE, 'error', 'fade', closeOnlineBannerAfter);         
                 });
 
                 $rootScope.$on('$cordovaNetwork:offline', function(event, networkState){
                   if(!isInternetConnected) return;
                   isInternetConnected= false;
                   console.log("went offline");
-                  showContentBanner(MESSAGES.GOES_OFFLINE, 'error', 'fade', 60*60000);
+                  showContentBanner(MESSAGES.GOES_OFFLINE, 'error', 'fade', closeOfflineBannerAfter);
                 });
      
             }
             else {
-     
+
                 window.addEventListener("online", function(e) {
                     console.log("went online");
-                    showContentBanner(MESSAGES.GOES_ONLINE, 'error', 'vertical', 2000);
+                    showContentBanner(MESSAGES.GOES_ONLINE, 'error', 'fade', closeOnlineBannerAfter);
                 }, false);    
 
                 window.addEventListener("offline", function(e) {
                     console.log("went offline");
-                    showContentBanner(MESSAGES.GOES_OFFLINE, 'error', 'fade', 60*60000);
-                }, false);  
+                    showContentBanner(MESSAGES.GOES_OFFLINE, 'error', 'fade', closeOfflineBannerAfter);
+                }, false); 
+
             }
         }
     }
