@@ -9,6 +9,7 @@ var postsDBSettings = {
   'AUTO_COMPACTION' : true
 };
 
+var postsDB = new PouchDB(postsDBSettings.POSTS_DB_NAME, { auto_compaction: postsDBSettings.AUTO_COMPACTION });
 
 angular.module('underscore', [])
 .factory('_', function() {
@@ -242,6 +243,7 @@ data: {
 })
 
   .state('app.bookmarks', {
+    cache: false,
     url: "/bookmarks",
     views: {
       'menuContent': {

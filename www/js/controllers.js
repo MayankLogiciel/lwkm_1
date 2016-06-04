@@ -104,17 +104,18 @@ if(typeof analytics !== "undefined") {analytics.trackView("Search Panes");}
 
 
 // BOOKMARKS
-.controller('BookMarksCtrl', function($scope, $rootScope, BookMarkService) {
+.controller('BookMarksCtrl', function($scope, $state, $rootScope, BookMarkService, PostService) {
 if(typeof analytics !== "undefined") { analytics.trackView("BookMark Library"); }
  if(typeof Appsee !== "undefined") {Appsee.startScreen("BookMark Library");}
   $scope.bookmarks = BookMarkService.getBookmarks();
 
   // When a new post is bookmarked, we should update bookmarks list
-  $rootScope.$on("new-bookmark", function(event, post_id){
-    $scope.bookmarks = BookMarkService.getBookmarks();
-  });
+  // $rootScope.$on("new-bookmark", function(event, post_id){
+  //   $scope.bookmarks = BookMarkService.getBookmarks();
+  // });
 	$scope.loadBookMarks = function(post){
-    $state.go('app.post', {postId : bookmark.id});
+    PostService.setPostDetailsToShow(post);
+    $state.go('app.post', {postId : post.id});
   };
 
   $scope.remove = function(bookmarkId) {
