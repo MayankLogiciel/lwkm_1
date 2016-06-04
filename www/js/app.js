@@ -1,4 +1,15 @@
 // LWKM Starter App
+
+// Create the PouchDB database instance
+
+var postsDBSettings = {
+  'POSTS_DB_NAME' : 'lwkm-posts1',
+  'MAX_RECENT_POST_STORE' : 30,
+  'PER_PAGE_POSTS' : 10,
+  'AUTO_COMPACTION' : true
+};
+
+
 angular.module('underscore', [])
 .factory('_', function() {
   return window._; // assumes underscore has already been loaded on the page

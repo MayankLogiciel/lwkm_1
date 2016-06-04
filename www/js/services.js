@@ -1,4 +1,75 @@
 angular.module('lwkm.services', [])
+
+
+.service("PostsDAO", function($q) {
+
+    /**
+     * 1. Add/Update posts to Posts Local DB
+     * 2. Delete older posts exceeding Local DB limit
+     * @param {Array} posts posts to add into the Local DB
+     */
+    this.addNewPosts = function(posts){
+
+      var docPosts = posts.map(function(post){
+        var docPost = {
+          "_id" : new Date(post.date).toJSON(),
+          "post" : post
+        }
+        return docPost;
+      });
+
+      //Don't bother for document conflict, as these records are already present
+      postsDB.bulkDocs(docPosts)
+      .then(function(result){
+        return postsDB.allDocs({descending: true, skip: postsDBSettings.MAX_RECENT_POST_STORE});
+      }).then(function (extraDocs) {
+          angular.forEach(extraDocs.rows, function(row){
+            postsDB.get(row.id).then(function(doc){
+              postsDB.remove(doc._id, doc._rev);
+            });
+          });
+      });
+    };
+
+    /**
+     * get recent posts from Posts Local DB
+     * @param  {Integer} page posts to be loaded from this page
+     * @return {Promise}
+     */
+    this.getRecentPosts = function(page) {
+        var deferred = $q.defer();
+
+        var options = {
+          include_docs: true,
+          descending: true,
+          skip: (page - 1) * postsDBSettings.PER_PAGE_POSTS,
+          limit: postsDBSettings.PER_PAGE_POSTS
+        };
+
+        postsDB.allDocs(options).then(function(docs){
+          console.log('getRecentPosts');
+          console.log(docs);
+          var data = {
+            posts : [],
+            total_rows : docs.total_rows,
+            offset: docs.offset,
+            isMorePostsPresent: true
+          };
+
+          angular.forEach(docs.rows, function(row){
+            data.posts.push(row.doc.post);
+          });
+
+          data.isMorePostsPresent = (docs.total_rows - docs.offset - docs.rows.length) > 0 ? true : false;
+          deferred.resolve(data); 
+
+        });
+
+        return deferred.promise;
+    }
+
+})
+
 // WP POSTS RELATED FUNCTIONS
 .service('PostService', function ($rootScope, $http, $q, WORDPRESS_API_URL, AuthService, $state, $ionicLoading, $ionicPopup, BookMarkService, ConnectivityMonitor, ConnectivityMonitor){
 
@@ -170,13 +241,18 @@ angular.module('lwkm.services', [])
     //define the max length (characters) of your post content
     var maxLength = 300;
     return _.map(posts, function(post){
+
       if(post.content.length > maxLength){
         //trim the string to the maximum length
         var trimmedString = post.content.substr(0, maxLength);
+
         //re-trim if we are in the middle of a word
         trimmedString = trimmedString.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf("</p>")));
         post.short_content = trimmedString;
+      }else{
+        post.short_content = post.content;
       }
+
       return post;
     });
   };

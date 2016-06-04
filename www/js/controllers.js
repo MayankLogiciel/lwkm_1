@@ -787,11 +787,12 @@ $scope.slideChanged = function(index) {
 })
 
 //HOME - GET RECENT POSTS
-.controller('HomeCtrl', function($scope, $cordovaNetwork, $rootScope,$state, $stateParams, $ionicLoading, $ionicPopup, $ionicScrollDelegate, $ionicPopover, $ionicHistory, PostService) {
+.controller('HomeCtrl', function($scope, $cordovaNetwork, $rootScope,$state, $stateParams, $ionicLoading, $ionicPopup, $ionicScrollDelegate, $ionicPopover, $ionicHistory, PostService, PostsDAO, ConnectivityMonitor) {
 	// show the interstitial later, e.g. at end of game level
- $scope.posts = [];
+    $scope.posts = [];
     $scope.page = 1;
     $scope.totalPages = 1;
+    $scope.morePostsCanBeLoadedFromDB = true;
 
 		$scope.doRefresh = function() {
       if($state.current.name.indexOf('app.home') !== -1 ) { //refresh only when on home page
@@ -800,15 +801,21 @@ $scope.slideChanged = function(index) {
           template: '<ion-spinner icon="android"></ion-spinner>'
         });
 
-        //Always bring me the latest posts => page=1
-
-        PostService.getRecentPosts(1)
-        .then(
-      	// successCallback
-      	function(data){
+        $scope.page = 1; //Always bring me the latest posts => page=1
+        PostService.getRecentPosts($scope.page).then( function(data){
             $scope.totalPages = data.pages;
             $scope.posts = PostService.shortenPosts(data.posts);
+            PostsDAO.addNewPosts($scope.posts);
+
             //$scope.$broadcast('scroll.refreshComplete');
+          },function(error){
+            //show recent post from pouch db
+            PostsDAO.getRecentPosts($scope.page).then(function(data){
+              console.log('posts shown from local db');
+              $scope.posts = data.posts;
+              console.log(data);
+              $scope.morePostsCanBeLoadedFromDB = data.isMorePostsPresent;
+            });
           }
         ).finally(function(){
           $scope.$broadcast('scroll.refreshComplete');
@@ -820,20 +827,36 @@ $scope.slideChanged = function(index) {
   $scope.loadMoreData = function(){
     $scope.page += 1;
 
-    PostService.getRecentPosts($scope.page)
-    .then(function(data){
+    PostService.getRecentPosts($scope.page).then(function(data){
       //We will update this value in every request because new posts can be created
       $scope.totalPages = data.pages;
       var new_posts = PostService.shortenPosts(data.posts);
       $scope.posts = $scope.posts.concat(new_posts);
+      PostsDAO.addNewPosts(new_posts);
+
       //$scope.$broadcast('scroll.infiniteScrollComplete');
+    },function(error){
+        //show recent post from pouch db
+        PostsDAO.getRecentPosts($scope.page).then(function(data){
+          console.log('posts shown from local db');
+          console.log(data);
+          $scope.posts = $scope.posts.concat(data.posts);
+          $scope.morePostsCanBeLoadedFromDB = data.isMorePostsPresent;
+        });      
     }).finally(function(){
       $scope.$broadcast('scroll.infiniteScrollComplete');
     });
   };
 
   $scope.moreDataCanBeLoaded = function(){
-    return $scope.totalPages > $scope.page;
+    if(ConnectivityMonitor.isOnline()){
+      return ($scope.totalPages === 1) || ($scope.totalPages > $scope.page);
+    }else{
+      if(!$scope.morePostsCanBeLoadedFromDB){
+
+      }
+      return $scope.morePostsCanBeLoadedFromDB;
+    }
   };
 
   /**
