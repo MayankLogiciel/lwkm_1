@@ -3,13 +3,19 @@
 // Create the PouchDB database instance
 
 var postsDBSettings = {
-  'POSTS_DB_NAME' : 'lwkm-posts1',
-  'MAX_RECENT_POST_STORE' : 30,
+  'POSTS_DB_NAME' : 'lwkm-posts',
+  'MAX_RECENT_POST_STORE' : 50,
   'PER_PAGE_POSTS' : 10,
   'AUTO_COMPACTION' : true
 };
 
+var bookmarksDBSettings = {
+  'BOOKMARKS_DB_NAME' : 'lwkm-bookmarks',
+  'AUTO_COMPACTION' : true
+}
+
 var postsDB = new PouchDB(postsDBSettings.POSTS_DB_NAME, { auto_compaction: postsDBSettings.AUTO_COMPACTION });
+var bookmarksDB = new PouchDB(bookmarksDBSettings.BOOKMARKS_DB_NAME, { auto_compaction: bookmarksDBSettings.AUTO_COMPACTION });
 
 angular.module('underscore', [])
 .factory('_', function() {
@@ -38,7 +44,7 @@ angular.module('lwkm', [
   'jett.ionic.content.banner'
   ])
 
-.run(function($ionicPlatform, $cordovaSplashscreen, $state, $timeout,  $rootScope, $ionicPopup, $ionicHistory, $cordovaNetwork, $ionicLoading, $cordovaToast, AuthService, ConnectivityMonitor) {
+.run(function($ionicPlatform, $cordovaSplashscreen, $state, $timeout,  $rootScope, $ionicPopup, $ionicHistory, $cordovaNetwork, $ionicLoading, $cordovaToast, AuthService, ConnectivityMonitor, BookMarkService, BookmarksDAO) {
    
 
   $ionicPlatform.ready(function(){
@@ -64,8 +70,13 @@ angular.module('lwkm', [
 
     // Initialize Push Notifications
     // Uncomment the following initialization when you have made the appropriate configuration for iOS - http://goo.gl/YKQL8k and for Android - http://goo.gl/SPGWDJ
-    initPushwoosh();
+    //initPushwoosh();
    
+    //move localstorage saved bookmarks into pouch db
+    if( BookMarkService.isBookmarksPresentInLocalStorage() ){
+      BookmarksDAO.moveLocalstorageBookmarkIntoPouch();
+    }
+
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if (window.cordova && window.cordova.plugins.Keyboard) {

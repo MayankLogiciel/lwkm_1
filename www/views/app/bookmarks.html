@@ -15,12 +15,12 @@
           <ion-item class="bookmark-item" ng-repeat="bookmark in bookmarks">
             <a ng-click="loadBookMarks(post)">
               <h2 class="post-title" ng-bind-html="bookmark.title | rawHtml"></h2>
-              <div class="card-content" dynamic-anchor-fix ng-bind-html="bookmark.content | rawHtml"></div>
+              <div class="card-content" dynamic-anchor-fix ng-bind-html="bookmark.short_content | rawHtml"></div>
               <p class="post-date">Posted <span class="post-time" am-time-ago="bookmark.date"></span></p>
             </a>
             <div class="row">
   <div class="col">  <button class="button  icon-left ion-ios-book button-calm"  ng-click="loadBookMarks(bookmark)">Open</button></div>
-  <div class="col"><button class="button  icon-left ion-trash-b button-assertive"  ng-click="remove(bookmark.id)">Remove</button></div>
+  <div class="col"><button class="button  icon-left ion-trash-b button-assertive"  ng-click="remove(bookmark)">Remove</button></div>
 </div>
           </ion-item>
         </ion-list>

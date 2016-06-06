@@ -104,10 +104,16 @@ if(typeof analytics !== "undefined") {analytics.trackView("Search Panes");}
 
 
 // BOOKMARKS
-.controller('BookMarksCtrl', function($scope, $state, $rootScope, BookMarkService, PostService) {
+.controller('BookMarksCtrl', function($scope, $state, $rootScope, BookMarkService, PostService, BookmarksDAO) {
 if(typeof analytics !== "undefined") { analytics.trackView("BookMark Library"); }
  if(typeof Appsee !== "undefined") {Appsee.startScreen("BookMark Library");}
-  $scope.bookmarks = BookMarkService.getBookmarks();
+  //$scope.bookmarks = BookMarkService.getBookmarks();
+
+  //load bookmarks 
+  BookmarksDAO.getAllBookmarks().then(function(data){
+    console.log(data);
+    $scope.bookmarks = data.bookmarks;
+  });
 
   // When a new post is bookmarked, we should update bookmarks list
   // $rootScope.$on("new-bookmark", function(event, post_id){
@@ -118,9 +124,11 @@ if(typeof analytics !== "undefined") { analytics.trackView("BookMark Library"); 
     $state.go('app.post', {postId : post.id});
   };
 
-  $scope.remove = function(bookmarkId) {
-    BookMarkService.remove(bookmarkId);
-    $scope.bookmarks = BookMarkService.getBookmarks();
+  $scope.remove = function(post) {
+    BookmarksDAO.removeBookmark(post);
+    $scope.bookmarks.splice($scope.bookmarks.indexOf(post),1);
+    //BookMarkService.remove(bookmarkId);
+    //$scope.bookmarks = BookMarkService.getBookmarks();
 	 if(typeof analytics !== "undefined") { analytics.trackEvent("BookMark", "click", "Remove", 25); }
   };
 })
@@ -788,7 +796,7 @@ $scope.slideChanged = function(index) {
 })
 
 //HOME - GET RECENT POSTS
-.controller('HomeCtrl', function($scope, $cordovaNetwork, $rootScope,$state, $stateParams, $ionicLoading, $ionicPopup, $ionicScrollDelegate, $ionicPopover, $ionicHistory, PostService, PostsDAO, ConnectivityMonitor) {
+.controller('HomeCtrl', function($scope, $cordovaNetwork, $rootScope,$state, $stateParams, $ionicLoading, $ionicPopup, $ionicScrollDelegate, $ionicPopover, $ionicHistory, PostService, PostsDAO, BookmarksDAO, ConnectivityMonitor) {
 	// show the interstitial later, e.g. at end of game level
     $scope.posts = [];
     $scope.page = 1;
@@ -878,8 +886,8 @@ $scope.slideChanged = function(index) {
 
   $scope.bookmarkPost = function(post){
     $ionicLoading.show({ template: 'Laugh Bookmarked!', noBackdrop: true, duration: 1000 });
-    PostService.bookmarkPost(post);
-      if(typeof analytics !== "undefined") { analytics.trackEvent("Viral", "click", "Bookmark Post 1", 25); }
+    BookmarksDAO.addBookmark(post);
+    if(typeof analytics !== "undefined") { analytics.trackEvent("Viral", "click", "Bookmark Post 1", 25); }
   };
 
 $scope.sttButton=false;
@@ -919,7 +927,7 @@ $scope.$on('$ionicView.enter', function(e) {
     })
 
 // POST
-.controller('PostCtrl', function($scope, post_data, $ionicLoading, PostService, $state, $ionicScrollDelegate, $ionicPopup, $ionicPopover, $timeout, $ionicActionSheet, $cordovaEmailComposer) {
+.controller('PostCtrl', function($scope, post_data, $ionicLoading, PostService, $state, $ionicScrollDelegate, $ionicPopup, $ionicPopover, $timeout, $ionicActionSheet, $cordovaEmailComposer, BookmarksDAO) {
 
   $scope.post = post_data.post;
   $scope.comments = _.map(post_data.post.comments, function(comment){
@@ -1007,8 +1015,8 @@ $scope.flag = false;
 
   $scope.bookmarkPost = function(post){
     $ionicLoading.show({ template: 'Laugh Bookmarked!', noBackdrop: true, duration: 1000 });
-    PostService.bookmarkPost(post);
-      if(typeof analytics !== "undefined") { analytics.trackEvent("Viral", "click", "Bookmark Post 2", 25); }
+    BookmarksDAO.addBookmark(post);
+    if(typeof analytics !== "undefined") { analytics.trackEvent("Viral", "click", "Bookmark Post 2", 25); }
   };
 
 
@@ -1208,7 +1216,7 @@ if(AdMob) AdMob.showInterstitial();
 })
 
 // CATEGORY
-.controller('PostCategoryCtrl', function($scope, $cordovaNetwork, $rootScope, $state, $ionicLoading, $stateParams, $ionicScrollDelegate, PostService, PostsDAO) {
+.controller('PostCategoryCtrl', function($scope, $cordovaNetwork, $rootScope, $state, $ionicLoading, $stateParams, $ionicScrollDelegate, PostService, PostsDAO, BookmarksDAO) {
  if(typeof analytics !== "undefined") { analytics.trackView("Post Category"); }
   $scope.category = {};
   $scope.category.id = $stateParams.categoryId;
@@ -1280,7 +1288,7 @@ if(AdMob) AdMob.showInterstitial();
 
   $scope.bookmarkPost = function(post){
     $ionicLoading.show({ template: 'Post Saved!', noBackdrop: true, duration: 1000 });
-    PostService.bookmarkPost(post);
+    BookmarksDAO.addBookmark(post);
   };
   $scope.sttButton=false;
   $scope.scrollTop = function() { //ng-click for back to top button

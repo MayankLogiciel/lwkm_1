@@ -131,8 +131,97 @@ angular.module('lwkm.services', [])
 
 })
 
+
+.service("BookmarksDAO", function($q, BookMarkService) {
+
+    /**
+     * add new bookmark to local bookmark db
+     * @param {Object} bookmark
+     */
+    this.addBookmark = function(bookmark){
+      bookmarksDB.get( new Date(bookmark.date).toJSON() ).then(function(result){
+        console.log(result);
+      }).catch(function (err) {
+         
+        if(err.status == 404){
+          
+          var docBookmark = {
+            "_id" : new Date(bookmark.date).toJSON(),
+            "post" : bookmark
+          };
+
+          bookmarksDB.put(docBookmark);
+        }
+
+      }); 
+    };
+
+    /**
+     * remove bookmark from local bookmark db
+     * @param {Object} bookmark
+     */
+    this.removeBookmark = function(bookmark){
+      bookmarksDB.get( new Date(bookmark.date).toJSON() ).then(function(doc){
+        console.log(doc);
+        bookmarksDB.remove(doc._id, doc._rev);
+      });
+    };
+
+    /**
+     * get all bookmarks from local bookmark db
+     * @return {Promise}
+     */    
+    this.getAllBookmarks = function(){
+      var deferred = $q.defer();
+
+      var options = {
+        include_docs: true,
+        descending: true,
+      };
+
+      bookmarksDB.allDocs(options).then(function(result){
+        console.log(result);
+        var data = {
+          bookmarks : [],
+        };
+
+        result.rows.map(function(row){
+          data.bookmarks.push(row.doc.post);
+        });
+
+        deferred.resolve(data); 
+      });
+
+      return deferred.promise;  
+    };
+
+    /**
+     * migrate old users bookmarks from localStorage to bookmarks pouch db
+     * @return {[type]} [description]
+     */
+    this.moveLocalstorageBookmarkIntoPouch = function(){
+      var localBookmarks = BookMarkService.getBookmarks();
+
+      var docBookmarks = localBookmarks.map(function(post){
+        var docBookmark = {
+          "_id" : new Date(post.date).toJSON(),
+          "post" : post
+        }
+        return docBookmark;
+      });
+
+      bookmarksDB.bulkDocs(docBookmarks).then(function(result){
+        delete window.localStorage.ionWordpress_bookmarks; // delete this key now
+        bookmarksDB.allDocs({include_docs: true}).then(function(result){
+          console.log(result);
+        });
+      });
+
+    };
+})
+
 // WP POSTS RELATED FUNCTIONS
-.service('PostService', function ($rootScope, $http, $q, WORDPRESS_API_URL, AuthService, $state, $ionicLoading, $ionicPopup, BookMarkService, ConnectivityMonitor, ConnectivityMonitor){
+.service('PostService', function ($rootScope, $http, $q, WORDPRESS_API_URL, AuthService, $state, $ionicLoading, $ionicPopup, BookMarkService, ConnectivityMonitor, ConnectivityMonitor, BookmarksDAO){
 
   this.postDetails = undefined; //store post details before going to post detail page
 
@@ -322,10 +411,11 @@ angular.module('lwkm.services', [])
     window.plugins.socialsharing.share('Check this post here: ', null, null, link);
   };
 
-  this.bookmarkPost = function(post){
-    BookMarkService.bookmarkPost(post);
-    $rootScope.$broadcast("new-bookmark", post);
-  };
+  // this.bookmarkPost = function(post){
+  //   //BookMarkService.bookmarkPost(post);
+  //   BookmarksDAO.addBookmark(post);
+  //   //$rootScope.$broadcast("new-bookmark", post);
+  // };
 
   this.getWordpressPage = function(page_slug) {
     var deferred = $q.defer();
@@ -563,6 +653,11 @@ angular.module('lwkm.services', [])
   this.getBookmarks = function(){
     return JSON.parse(window.localStorage.ionWordpress_bookmarks || '[]');
   };
+
+  this.isBookmarksPresentInLocalStorage = function(){
+    var bookmarks = JSON.parse(window.localStorage.ionWordpress_bookmarks || '[]');
+    return bookmarks.length > 0 ? true : false;
+  }
 
   this.remove = function(id){
     var user_bookmarks = !_.isUndefined(window.localStorage.ionWordpress_bookmarks) ? JSON.parse(window.localStorage.ionWordpress_bookmarks) : [];
