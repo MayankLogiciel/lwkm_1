@@ -1208,7 +1208,7 @@ if(AdMob) AdMob.showInterstitial();
 })
 
 // CATEGORY
-.controller('PostCategoryCtrl', function($scope, $cordovaNetwork, $rootScope, $state, $ionicLoading, $stateParams, $ionicScrollDelegate, PostService) {
+.controller('PostCategoryCtrl', function($scope, $cordovaNetwork, $rootScope, $state, $ionicLoading, $stateParams, $ionicScrollDelegate, PostService, PostsDAO) {
  if(typeof analytics !== "undefined") { analytics.trackView("Post Category"); }
   $scope.category = {};
   $scope.category.id = $stateParams.categoryId;
@@ -1217,12 +1217,13 @@ if(AdMob) AdMob.showInterstitial();
   $scope.posts = [];
   $scope.page = 1;
   $scope.totalPages = 1;
+  $scope.hideInfiniteScroll = false;
 
   $scope.doRefresh = function() {
     if($state.current.name.indexOf('app.category') !== -1 ) { //refresh only when on category post page
         $ionicLoading.show({
           template: '<ion-spinner icon="android"></ion-spinner>',
-    	showBackdrop: false
+    	     showBackdrop: false
         });
 
         PostService.getPostsFromCategory($scope.category.id, 1)
@@ -1230,9 +1231,16 @@ if(AdMob) AdMob.showInterstitial();
           $scope.totalPages = data.pages;
           $scope.posts = PostService.shortenPosts(data.posts);
           //$scope.$broadcast('scroll.refreshComplete');
+          $scope.hideInfiniteScroll = false;
+        },function(error){
+          PostsDAO.getPostsHavingCategory($scope.category.id).then(function(data){
+            $scope.posts = data.posts;
+            $scope.hideInfiniteScroll = true;
+          });
         }).finally(function(){
           $scope.$broadcast('scroll.refreshComplete');
         });
+        
       }
 		};
   $scope.loadMoreData = function(){
@@ -1263,7 +1271,7 @@ if(AdMob) AdMob.showInterstitial();
   };
 
   $scope.moreDataCanBeLoaded = function(){
-    return $scope.totalPages > $scope.page;
+    return (!$scope.hideInfiniteScroll) && ($scope.totalPages > $scope.page);
   };
 
   $scope.sharePost = function(link){

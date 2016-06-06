@@ -66,7 +66,68 @@ angular.module('lwkm.services', [])
         });
 
         return deferred.promise;
+    };
+
+    /**
+     * get filtered category posts from Posts Local DB according to categoryId
+     * @param  {String/Integer} categoryId  posts to be fetched for
+     * @return {Promise}
+     */
+    this.getPostsHavingCategory = function(categoryId){
+        var deferred = $q.defer();
+
+        var options = {
+          include_docs: true,
+          descending: true,
+        };
+
+        postsDB.allDocs(options).then(function(docs){
+          var data = {
+            posts : [],
+          };
+
+          data.posts = filterPostsHavingCategoryId(docs.rows, categoryId);
+          deferred.resolve(data); 
+        });
+
+        return deferred.promise;      
+    };
+
+    /**
+     * get matching post with category Id
+     * @param  {Array}  rows  rows/post fetched from pouch db
+     * @param  {String/Integer}  categoryId 
+     * @return {Array} filtered posts accordint to categoryId
+     */
+    var filterPostsHavingCategoryId = function(rows, categoryId){
+        var relatedPosts = [];
+        rows.map(function(row){
+            if( isPostRelatedToCategory(row.doc.post, categoryId) ){
+              relatedPosts.push(row.doc.post);
+            }
+        });
+
+        return relatedPosts;
     }
+
+    /**
+     * check whether post is related with particular category or not
+     * @param  {Object}          post       to decide
+     * @param  {String/Integer}  categoryId 
+     * @return {Boolean}
+     */
+    var isPostRelatedToCategory = function(post, categoryId){
+        var isRelated = false;
+
+        for (var i = 0; i < post.categories.length; i++) {
+          if(post.categories[i].id == categoryId){
+            isRelated = true;
+            break;
+          }
+        }
+
+        return isRelated;
+    };
 
 })
 
