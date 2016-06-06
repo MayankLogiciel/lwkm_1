@@ -303,7 +303,7 @@ angular.module('lwkm.directives', [])
 	};
 })
 
-.directive('myTab', function($state, $ionicHistory) {
+.directive('myTab', function($state, $ionicHistory, PostService) {
 	return {
 		require: '^searchResults',
 		restrict: 'E',
@@ -322,6 +322,7 @@ angular.module('lwkm.directives', [])
 				$ionicHistory.nextViewOptions({
 					disableAnimate: true
 				});
+    			PostService.setPostDetailsToShow(post); // save post details in service
 				$state.go('app.post', {postId: post.id});
 			};
 		},
