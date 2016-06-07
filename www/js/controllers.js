@@ -41,9 +41,9 @@ if(typeof analytics !== "undefined") {analytics.trackView("Search Panes");}
     return parents;
   };
 
-  Categories.getCategories()
-  .then(function(data){
-    var sorted_categories = _.sortBy(data.categories, function(category){ return category.title; });
+  var convertCategoriesToDisplay = function(categories){
+
+    var sorted_categories = _.sortBy(categories, function(category){ return category.title; });
     var parents = _.filter(sorted_categories, function(category){ return category.parent===0; });
     var result = getItems(parents, sorted_categories);
 
@@ -52,6 +52,15 @@ if(typeof analytics !== "undefined") {analytics.trackView("Search Panes");}
       id: '0',
       items: result
     };
+  }
+
+  Categories.getCategories()
+  .then(function(data){
+    Categories.saveCategoriesInLocalStorage(data.categories);
+    convertCategoriesToDisplay(data.categories);
+  },function(error){
+    var categories = Categories.getCategoriesFromLocalStorage();
+    convertCategoriesToDisplay(categories);
   });
 })
 

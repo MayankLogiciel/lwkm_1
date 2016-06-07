@@ -230,7 +230,14 @@ angular.module('lwkm.factories', [])
       });
 
       return deferred.promise;
+    },
+    saveCategoriesInLocalStorage: function(categories){
+      window.localStorage.ionWordpress_categories = JSON.stringify(categories);
+    },
+    getCategoriesFromLocalStorage: function(){
+      return !_.isUndefined(window.localStorage.ionWordpress_categories) ? JSON.parse(window.localStorage.ionWordpress_categories) : [];
     }
+
   };
 })
 
