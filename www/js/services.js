@@ -261,12 +261,7 @@ angular.module('lwkm.services', [])
       if(ConnectivityMonitor.isOffline()){
         ConnectivityMonitor.showErrorBanner(ConnectivityMonitor.MESSAGES.SOMETHING_WRONG);
       }else{
-        $ionicPopup.alert({
-            title: 'Network issues? ',
-            template: 'Its taking too long. You are probably having network issues.Please pull down to refresh and try again',
-         cssClass: 'popup-vertical-buttons', // String, The custom CSS class name
-         okType: 'button-assertive'
-          });
+ 
       }
     });
     return deferred.promise;
@@ -311,13 +306,7 @@ angular.module('lwkm.services', [])
       if(ConnectivityMonitor.isOffline()){
         ConnectivityMonitor.showErrorBanner(ConnectivityMonitor.MESSAGES.SOMETHING_WRONG);
       }else{
-    	 // An alert dialog
-       $ionicPopup.alert({
-         title: 'Network issues? ',
-         template: 'Its taking too long. You are probably having network issues.Please try again',
-    	 cssClass: 'popup-vertical-buttons', // String, The custom CSS class name
-    	 okType: 'button-assertive'
-       });
+
       }
 
     });
@@ -372,14 +361,8 @@ angular.module('lwkm.services', [])
       if(ConnectivityMonitor.isOffline()){
         ConnectivityMonitor.showErrorBanner(ConnectivityMonitor.MESSAGES.SOMETHING_WRONG);
       }else{        
-    	 // An alert dialog
-       $ionicPopup.alert({
-         title: 'Network issues? ',
-         template: 'Its taking too long. You are probably having network issues.Please try again',
-    	  cssClass: 'popup-vertical-buttons', // String, The custom CSS class name
-    	 okType: 'button-assertive' // String, The custom CSS class name
-       });
-     }
+
+      }
 
     });
 
@@ -438,14 +421,8 @@ angular.module('lwkm.services', [])
       if(ConnectivityMonitor.isOffline()){
         ConnectivityMonitor.showErrorBanner(ConnectivityMonitor.MESSAGES.SOMETHING_WRONG);
       }else{          
-    	 // An alert dialog
-       $ionicPopup.alert({
-         title: 'Network issues? ',
-         template: 'Its taking too long. You are probably having network issues.Please try again',
-         cssClass: 'popup-vertical-buttons', // String, The custom CSS class name
-         okType: 'button-assertive'
-       });
-     }
+
+      }
 
     });
     return deferred.promise;
@@ -512,14 +489,8 @@ angular.module('lwkm.services', [])
       if(ConnectivityMonitor.isOffline()){
         ConnectivityMonitor.showErrorBanner(ConnectivityMonitor.MESSAGES.SOMETHING_WRONG);
       }else{       
-    	 // An alert dialog
-       $ionicPopup.alert({
-         title: 'Network issues? ',
-         template: 'Its taking too long. You are probably having network issues.Please try again',
-    	 cssClass: 'popup-vertical-buttons', // String, The custom CSS class name
-    	 okType: 'button-assertive' // String, The custom CSS class name
-       });
-     }
+
+      }
 
     });
     return deferred.promise;
@@ -842,15 +813,8 @@ angular.module('lwkm.services', [])
       if(ConnectivityMonitor.isOffline()){
         ConnectivityMonitor.showErrorBanner(ConnectivityMonitor.MESSAGES.SOMETHING_WRONG);
       }else{        
-    	 // An alert dialog
-       $ionicPopup.alert({
-         title: 'Network issues? ',
-         template: 'Its taking too long(18 seconds). You are probably having network issues.Please try again',
-    	 cssClass: 'popup-vertical-buttons', // String, The custom CSS class name
-    	 okType: 'button-assertive' // String, The custom CSS class name
 
-       });
-     }
+      }
 
     });
     return deferred.promise;
