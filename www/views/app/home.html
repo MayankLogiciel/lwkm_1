@@ -13,7 +13,7 @@
     </div>
 
     <!-- Infinit scroll -->
-    <ion-infinite-scroll ng-if="moreDataCanBeLoaded()" on-infinite="loadMoreData()" distance="1%">
+    <ion-infinite-scroll ng-if="posts.length > 0 && moreDataCanBeLoaded()" on-infinite="loadMoreData()" distance="1%">
     </ion-infinite-scroll>
   </ion-content>
   <div class="float-button effect1" ng-show="sttButton" ng-click="scrollTop()">
