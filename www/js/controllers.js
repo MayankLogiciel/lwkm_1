@@ -955,6 +955,48 @@ $scope.$on('$ionicView.enter', function(e) {
 			 if(typeof Appsee !== "undefined") {Appsee.startScreen("Post Details");}
 //Comment
 $scope.flag = false;
+
+
+  var videosCategoriesIds = ["1", "3", "331", "332", "911", "1812"];
+
+  var beforeEnterEvent = $scope.$on("$ionicView.beforeEnter", function(event, data){
+     //remove ads for video's subcategories
+     if( isPostRelatedToVideoCategories($scope.post) ){
+        window.AdMob.hideBanner(); 
+     }
+  });
+
+  var beforeLeaveEvent = $scope.$on("$ionicParentView.beforeLeave", function(event, data){
+     //show banner/ads again
+     if( isPostRelatedToVideoCategories($scope.post) ){
+        window.AdMob.showBanner();
+     }  
+  }); 
+
+  $scope.$on("$destroy", function(){
+    beforeEnterEvent();
+    beforeLeaveEvent();
+  });
+
+  var isPostRelatedToVideoCategories = function(post){
+    var isRelated = false;
+
+    if( post.categories && post.categories.length > 0 ){
+      for (var i = 0; i < post.categories.length; i++) {
+        
+        if( videosCategoriesIds.indexOf( post.categories[i].id + '') != -1 ){
+          console.log('post is related to video');
+          isRelated = true;
+          break;
+        }
+
+      }
+    }
+
+
+    return isRelated;
+  };
+
   $scope.showMe = function(){
 		// An elaborate, custom popup
 		var myPopup1 = $ionicPopup.show({
@@ -1225,21 +1267,21 @@ if(AdMob) AdMob.showInterstitial();
 })
 
 // CATEGORY
-.controller('PostCategoryCtrl', function($scope, $cordovaNetwork, $rootScope, $state, $ionicLoading, $stateParams, $ionicScrollDelegate, PostService, PostsDAO, BookmarksDAO, AdMob) {
+.controller('PostCategoryCtrl', function($scope, $cordovaNetwork, $rootScope, $state, $ionicLoading, $stateParams, $ionicScrollDelegate, PostService, PostsDAO, BookmarksDAO) {
   
   var videosCategoriesIds = ["1", "3", "331", "332", "911", "1812"];
 
   var beforeEnterEvent = $scope.$on("$ionicView.beforeEnter", function(event, data){
      //remove ads for video's subcategories
      if( videosCategoriesIds.indexOf(data.stateParams.categoryId) != -1){
-        AdMob.removeAds(); 
+        window.AdMob.hideBanner(); 
      }
   });
 
   var beforeLeaveEvent = $scope.$on("$ionicParentView.beforeLeave", function(event, data){
      //show banner/ads again
      if( videosCategoriesIds.indexOf(data.stateParams.categoryId) != -1){
-        AdMob.showBanner();
+        window.AdMob.showBanner();
      }
   }); 
 
