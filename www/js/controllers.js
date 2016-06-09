@@ -1225,7 +1225,29 @@ if(AdMob) AdMob.showInterstitial();
 })
 
 // CATEGORY
-.controller('PostCategoryCtrl', function($scope, $cordovaNetwork, $rootScope, $state, $ionicLoading, $stateParams, $ionicScrollDelegate, PostService, PostsDAO, BookmarksDAO) {
+.controller('PostCategoryCtrl', function($scope, $cordovaNetwork, $rootScope, $state, $ionicLoading, $stateParams, $ionicScrollDelegate, PostService, PostsDAO, BookmarksDAO, AdMob) {
+  
+  var videosCategoriesIds = ["1", "3", "331", "332", "911", "1812"];
+
+  var beforeEnterEvent = $scope.$on("$ionicView.beforeEnter", function(event, data){
+     //remove ads for video's subcategories
+     if( videosCategoriesIds.indexOf(data.stateParams.categoryId) != -1){
+        AdMob.removeAds(); 
+     }
+  });
+
+  var beforeLeaveEvent = $scope.$on("$ionicParentView.beforeLeave", function(event, data){
+     //show banner/ads again
+     if( videosCategoriesIds.indexOf(data.stateParams.categoryId) != -1){
+        AdMob.showBanner();
+     }
+  }); 
+
+  $scope.$on("$destroy", function(){
+    beforeEnterEvent();
+    beforeLeaveEvent();
+  });
+
  if(typeof analytics !== "undefined") { analytics.trackView("Post Category"); }
   $scope.category = {};
   $scope.category.id = $stateParams.categoryId;
