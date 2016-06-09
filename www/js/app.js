@@ -45,7 +45,7 @@ angular.module('lwkm', [
   ])
 
 .config(function($ionicConfigProvider) {
-  $ionicConfigProvider.scrolling.jsScrolling(false);
+ //$ionicConfigProvider.scrolling.jsScrolling(false);
 })
 
 .run(function($ionicPlatform, $cordovaSplashscreen, $state, $timeout,  $rootScope, $ionicPopup, $ionicHistory, $cordovaNetwork, $ionicLoading, $cordovaToast, AuthService, ConnectivityMonitor, BookMarkService, BookmarksDAO) {
