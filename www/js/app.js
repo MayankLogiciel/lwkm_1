@@ -44,6 +44,10 @@ angular.module('lwkm', [
   'jett.ionic.content.banner'
   ])
 
+.config(function($ionicConfigProvider) {
+  $ionicConfigProvider.scrolling.jsScrolling(false);
+})
+
 .run(function($ionicPlatform, $cordovaSplashscreen, $state, $timeout,  $rootScope, $ionicPopup, $ionicHistory, $cordovaNetwork, $ionicLoading, $cordovaToast, AuthService, ConnectivityMonitor, BookMarkService, BookmarksDAO) {
    
 
@@ -70,7 +74,7 @@ angular.module('lwkm', [
 
     // Initialize Push Notifications
     // Uncomment the following initialization when you have made the appropriate configuration for iOS - http://goo.gl/YKQL8k and for Android - http://goo.gl/SPGWDJ
-    //initPushwoosh();
+    initPushwoosh();
    
     //move localstorage saved bookmarks into pouch db
     if( BookMarkService.isBookmarksPresentInLocalStorage() ){

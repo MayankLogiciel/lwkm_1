@@ -71,7 +71,11 @@ $content-banner-text-color: #fff   !default;
 //   opacity: $content-banner-opacity;
 // }
 
-.content-banner .content-banner-text.active {
-    opacity: 1;
-    color: $content-banner-text-color;
+.content-banner{
+	position: fixed;
+	top: 44px;    
+	.content-banner-text.active {
+	    opacity: 1;
+	    color: $content-banner-text-color;
+	}	
 }
